@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
-
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
 import {
@@ -17,6 +16,10 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import MainLayout from "../layout/mainLayout";
 import { useRouter } from "next/router";
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
+
 
 const { chains, provider } = configureChains(
   [
@@ -34,6 +37,7 @@ const { chains, provider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: "My Alchemy DApp",
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
   chains,
 });
 
@@ -46,12 +50,43 @@ const wagmiClient = createClient({
 export { WagmiConfig, RainbowKitProvider };
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter()
-  const account = useAccount({
-    onConnect({ address, connector, isReconnected }) {
-      if (!isReconnected) router.reload();
-    },
-  });
+  const router = useRouter();
+  const { address, isConnected } = useAccount();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    const checkNFTOwnership = async () => {
+      if (isConnected && address) {
+        try {
+          const contractAddress = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
+          const response = await axios.get(
+            `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
+          );
+
+          if (response.data.totalCount > 0) {
+            router.push('/members-only');
+          } else if (!router.pathname.includes('/members-only')) {
+            router.push('/');
+          }
+        } catch (error) {
+          console.error("Error checking NFT ownership:", error);
+        }
+      }
+    };
+
+    if (isClient) {
+      checkNFTOwnership();
+    }
+  }, [address, isConnected, router.pathname, isClient]);
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
