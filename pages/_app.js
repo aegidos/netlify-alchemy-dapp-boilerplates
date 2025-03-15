@@ -32,7 +32,7 @@ const { chains, provider } = configureChains(
     arbitrum,
     arbitrumGoerli,
   ],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()]
+  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}), publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }) {
     const checkNFTOwnership = async () => {
       if (isConnected && address) {
         try {
-          const contractAddress = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d";
+          const contractAddress = "0x60e4d786628fea6478f785a6d7e704777c86a7c6";
           const response = await axios.get(
             `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
           );
@@ -91,7 +91,7 @@ function MyApp({ Component, pageProps }) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         modalSize="compact"
-        initialChain={process.env.NEXT_PUBLIC_DEFAULT_CHAIN}
+        initialChain={mainnet}
         chains={chains}
       >
         <MainLayout>
