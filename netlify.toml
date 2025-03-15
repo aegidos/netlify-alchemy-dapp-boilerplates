@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_ALCHEMY_API_KEY = ""
+  NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID = ""
+
+# Configure secrets scanning
+[secrets]
+  SECRETS_SCAN_OMIT_PATHS = [
+    ".next/static/chunks/pages/_app-*.js",
+    ".next/static/chunks/pages/index-*.js"
+  ]
