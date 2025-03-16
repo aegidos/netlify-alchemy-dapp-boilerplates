@@ -4,13 +4,7 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
 import {
   mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  goerli,
-  polygonMumbai,
-  optimismGoerli,
-  arbitrumGoerli,
+ 
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -20,17 +14,29 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 
+// ApeChain Configuration
+const apeChain = {
+  id: 33139,
+  name: 'ApeChain',
+  network: 'apechain',
+  nativeCurrency: {
+    name: 'APE',
+    symbol: 'APE',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: 'https://apechain.calderachain.xyz/http',
+  },
+  blockExplorers: {
+    default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
+  },
+  testnet: false,
+};
 
 const { chains, provider } = configureChains(
   [
     mainnet,
-    goerli,
-    polygon,
-    polygonMumbai,
-    optimism,
-    optimismGoerli,
-    arbitrum,
-    arbitrumGoerli,
+   
   ],
   [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}), publicProvider()]
 );
@@ -62,9 +68,12 @@ function MyApp({ Component, pageProps }) {
     const checkNFTOwnership = async () => {
       if (isConnected && address) {
         try {
-          const contractAddress = "0x60e4d786628fea6478f785a6d7e704777c86a7c6";
+          //APE GANG
+          const contractAddress = '0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90';
+          //MAYC
+          //const contractAddress = "0x60e4d786628fea6478f785a6d7e704777c86a7c6";
           const response = await axios.get(
-            `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
+            `https://apechain-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
           );
 
           if (response.data.totalCount > 0) {

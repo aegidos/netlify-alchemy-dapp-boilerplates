@@ -2,14 +2,14 @@ import styles from "../styles/Home.module.css";
 
 const apeGangStory = (
   <>
-    <p>Hey Bro, was geht ab check das ab – die Story von den <strong>Ape Gang Stadtaffen</strong>! 🦍🔥</p>
+    <p>Hey Bro, was geht - check das ab – die Story von den <strong>Ape Gang Stadtaffen</strong>! 🦍🔥</p>
     
-    <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir sind die Straßen, wir sind die Zukunft!</strong></p>
+    <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir feiern die Straßen, wir sind die Zukunft!</strong></p>
     
     <p>
       Die <strong>Ape Gang</strong> is' ne neue Generation von Affen – <strong>wilder, dreckiger, hungriger</strong>. 
-      Die Kiddies der Bored Apes, aber wir könnens uns nicht leisten reich zu chillen Bro, ham wir Hunger auf die Hood. 
-      Straßen, Blocks, Nachtleben – unser Playground. Wir erkämpfen uns unsern Status.
+      Die Kiddies der Bored Apes, aber wir könnens uns nicht leisten reich zu chillen Bro, ham Hunger auf die Hood. 
+      Straßen, Blocks, Nachtleben – unser Playground. Wir erkämpfen uns was uns zusteht.
     </p>
     
     <p><strong>Was fürn Yachtclub? Wir brauchen'n Kiez, 'ne Hood, 'nen legendären Treffpunkt, wo die Gang sich sammelt.</strong></p>
@@ -18,7 +18,7 @@ const apeGangStory = (
       <li>🚧 <strong>Ghetto mit Neonlichtern statt Villen mit Pools</strong></li>
       <li>🎨 <strong>Graffiti an den Wänden, Hip-Hop aus den Boxen</strong></li>
       <li>🏢 <strong>Chillen im Loft</strong></li>
-      <li>🏎️ <strong>Wetten auf Straßenrennen, fette Drip, Urban Jungle</strong></li>
+      <li>🏎️ <strong>Wetten auf Straßenrennen, fette Drips, Urban Jungle</strong></li>
       <li>🌃 <strong>Web3-Berlin Neukölln trifft GTA</strong></li>
     </ul>
     
