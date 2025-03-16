@@ -1,10 +1,11 @@
 .main {
-	padding: 2rem 0;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin-top: -00px; /* Adjust this value based on your navbar height */
+  background-color: black;
+  padding: 1rem;
 }
 
 .button {

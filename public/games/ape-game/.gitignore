@@ -1,0 +1,15 @@
+screenshots/
+raw_sfx/
+old_stuff/
+min/
+itch.io/
+*_old*
+*_debug*
+*.txt
+*.csv
+*.py
+
+node_modules/
+out.js
+out.js.map
+tsconfig.tsbuildinfo
