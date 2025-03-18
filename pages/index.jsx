@@ -1,4 +1,5 @@
 import styles from "../styles/Home.module.css";
+import { useRouter } from 'next/router';
 
 const apeGangStory = (
   <>
@@ -29,6 +30,8 @@ const apeGangStory = (
 );
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <main className={styles.main}>
@@ -54,6 +57,26 @@ export default function Home() {
         }}>
           {apeGangStory}
         </div>
+        
+        <button
+          onClick={() => router.push('/game')}
+          style={{
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            padding: '15px 30px',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1.2rem',
+            marginTop: '2rem',
+            marginBottom: '2rem',
+            transition: 'background-color 0.3s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
+        >
+          START GAME
+        </button>
         
         {/* Social Links */}
         <div style={{
