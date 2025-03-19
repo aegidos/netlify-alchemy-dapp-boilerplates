@@ -3,24 +3,24 @@ import { useRouter } from 'next/router';
 
 const apeGangStory = (
   <>
-    <p>Hey Bro, was geht - check das ab – die Story von den <strong>Ape Gang Stadtaffen</strong>! 🦍🔥</p>
+    <p>Hey Bro, Hey Gangsters, was geht - check das ab – die Story der <strong>Ape Gang Stadtaffen</strong>! 🦍🔥</p>
     
-    <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir feiern die Straßen, wir sind die Zukunft!</strong></p>
+    <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir feiern in den Clubs und Straßen, wir sind die Zukunft!</strong></p>
     
     <p>
       Die <strong>Ape Gang</strong> is' ne neue Generation von Affen – <strong>wilder, dreckiger, hungriger</strong>. 
-      Die Kiddies der Bored Apes, aber wir könnens uns nicht leisten reich zu chillen Bro, ham Hunger auf die Hood. 
+      Die nächste Generation, aber wir können's uns nicht leisten reich zu chillen Bro. 
       Straßen, Blocks, Nachtleben – unser Playground. Wir erkämpfen uns was uns zusteht.
     </p>
     
-    <p><strong>Was fürn Yachtclub? Wir brauchen'n Kiez, 'ne Hood, 'nen legendären Treffpunkt, wo die Gang sich sammelt.</strong></p>
+    <p><strong>Was fürn Yachtclub? Wir brauchen'n Kiez, 'ne Hood, 'nen legendären Treffpunkt einen Space, wo die Gang sich sammelt.</strong></p>
     
     <ul>
-      <li>🚧 <strong>Ghetto mit Neonlichtern statt Villen mit Pools</strong></li>
+      <li>🚧 <strong>Ghetto mit Neonlichtern statt Villen und Pools</strong></li>
       <li>🎨 <strong>Graffiti an den Wänden, Hip-Hop aus den Boxen</strong></li>
       <li>🏢 <strong>Chillen im Loft</strong></li>
-      <li>🏎️ <strong>Wetten auf Straßenrennen, fette Drips, Urban Jungle</strong></li>
-      <li>🌃 <strong>Web3-Berlin Neukölln trifft GTA</strong></li>
+      <li>🏎️ <strong>Wetten auf Straßenrennen, fette Cars, Urban Jungle</strong></li>
+      <li>🌃 <strong>Wir sind das neue GTA</strong></li>
     </ul>
     
     <p>Hier gibt's nur <strong>eins</strong>: Wer's von hier nach oben schafft, <strong>wird zur Legende</strong>. 💥🚀</p>
