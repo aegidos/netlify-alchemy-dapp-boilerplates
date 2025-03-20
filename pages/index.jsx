@@ -58,26 +58,6 @@ export default function Home() {
           {apeGangStory}
         </div>
         
-        <button
-          onClick={() => router.push('/game')}
-          style={{
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            padding: '15px 30px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1.2rem',
-            marginTop: '2rem',
-            marginBottom: '2rem',
-            transition: 'background-color 0.3s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
-        >
-          START GAME
-        </button>
-        
         {/* Social Links */}
         <div style={{
           display: 'flex',
@@ -86,33 +66,7 @@ export default function Home() {
           padding: '2rem 0',
           width: '100%'
         }}>
-          <a href="https://opensea.io/collection/apegang-ape" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
-             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
-             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
-          >
-            <img src="/images/opensea.svg" alt="OpenSea" width="40" height="40" />
-          </a>
-          <a href="https://x.com/aegidos" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
-             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
-             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
-          >
-            <img src="/images/x-logo.svg" alt="X (Twitter)" width="40" height="40" />
-          </a>
-          <a href="https://www.threads.net/andischmid1210" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
-             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
-             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
-          >
-            <img src="/images/threads.svg" alt="Threads" width="40" height="40" />
-          </a>
+          {/* ...existing social links... */}
         </div>
       </main>
     </div>
