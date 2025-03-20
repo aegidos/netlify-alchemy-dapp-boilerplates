@@ -5,7 +5,7 @@ import { useState } from 'react';
 const translations = {
   de: (
     <>
-      <p>Hey Bro, Hey Gangsters, was geht - check das ab – die Story der <strong>Ape Gang Stadtaffen</strong>! 🦍🔥</p>
+      <p>Hey Bro, Hey Gangsters, was geht - check das ab – die Story der <strong>Ape Gang</strong>! 🦍🔥</p>
       
       <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir feiern in den Clubs und Straßen, wir sind die Zukunft!</strong></p>
       
@@ -22,12 +22,13 @@ const translations = {
         <li>🎨 <strong>Graffiti an den Wänden, Hip-Hop aus den Boxen</strong></li>
         <li>🏢 <strong>Chillen im Loft</strong></li>
         <li>🏎️ <strong>Wetten auf Straßenrennen, fette Cars, Urban Jungle</strong></li>
-        <li>🌃 <strong>Wir sind das neue GTA</strong></li>
+        <li>🌃 <strong>Wir sind das neue GTA in Ape City</strong></li>
       </ul>
       
       <p>Hier gibt's nur <strong>eins</strong>: Wer's von hier nach oben schafft, <strong>wird zur Legende</strong>. 💥🚀</p>
       
-      <p>🔥 <strong>Ape Gang Stadtaffen – We run the streets!</strong> 🔥</p>
+      <p>🔥 <strong>Ape Gang  – Willkommen in Ape City und auf zum ersten Quest!</strong> 🔥</p>
+      <p>🔥 <strong>Quest 1:  – Verbinde dein Wallet und erobere im nächsten Game den Planeten Q</strong> 🔥</p>
     </>
   ),
   en: (
@@ -54,7 +55,8 @@ const translations = {
       
       <p>There's only <strong>one thing</strong>: Whoever makes it to the top <strong>becomes a legend</strong>. 💥🚀</p>
       
-      <p>🔥 <strong>Ape Gang City Apes – We run the streets!</strong> 🔥</p>
+      <p>🔥 <strong>Ape Gang City Apes – Welcome to Ape City and let's start your first Quest!</strong> 🔥</p>
+      <p>🔥 <strong>Quest 1:  – Connect your wallet and conquer planet Q</strong> 🔥</p>
     </>
   )
 };
