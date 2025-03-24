@@ -5,58 +5,42 @@ import { useState } from 'react';
 const translations = {
   de: (
     <>
-      <p>Hey Bro, Hey Gangsters, was geht - check das ab – die Story der <strong>Ape Gang</strong>! 🦍🔥</p>
-      
-      <p>Vergiss Yachten, vergiss Golf Clubs – <strong>wir feiern in den Clubs und Straßen, wir sind die Zukunft!</strong></p>
-      
-      <p>
-        Die <strong>Ape Gang</strong> is' ne neue Generation von Affen – <strong>wilder, dreckiger, hungriger</strong>. 
-        Die nächste Generation, aber wir können's uns nicht leisten reich zu chillen Bro. 
-        Straßen, Blocks, Nachtleben – unser Playground. Wir erkämpfen uns was uns zusteht.
-      </p>
-      
-      <p><strong>Was fürn Yachtclub? Wir brauchen'n Kiez, 'ne Hood, 'nen legendären Treffpunkt einen Space, wo die Gang sich sammelt.</strong></p>
-      
-      <ul>
-        <li>🚧 <strong>Ghetto mit Neonlichtern statt Villen und Pools</strong></li>
-        <li>🎨 <strong>Graffiti an den Wänden, Hip-Hop aus den Boxen</strong></li>
-        <li>🏢 <strong>Chillen im Loft</strong></li>
-        <li>🏎️ <strong>Wetten auf Straßenrennen, fette Cars, Urban Jungle</strong></li>
-        <li>🌃 <strong>Wir sind das neue GTA in Ape City</strong></li>
-      </ul>
-      
-      <p>Hier gibt's nur <strong>eins</strong>: Wer's von hier nach oben schafft, <strong>wird zur Legende</strong>. 💥🚀</p>
-      
-      <p>🔥 <strong>Ape Gang  – Willkommen in Ape City und auf zum ersten Quest!</strong> 🔥</p>
-      <p>🔥 <strong>Quest 1:  – Verbinde dein Wallet und erobere im nächsten Game den Planeten Q</strong> 🔥</p>
+      🦍 Planet der Ape Gang – Überleben, Entwickeln, Erobern! 🌍🚀
+      <p>Yo Gang, macht euch bereit – das ist der **Planet der Ape Gang**! 🦍🔥</p> 
+      <p>Gestrandet auf einem wilden Planeten muss die **Ape Gang** ums Überleben kämpfen – gegen gnadenlose Alien-Spezies und unaufhaltsame Naturkatastrophen wie Meteoriteneinschläge, Vulkanausbrüche und gewaltige Überschwemmungen. 💥🌋🌊</p>
+       <p>Die **Ape Gang Apes** müssen sich durchschlagen: 
+        <li>🍌 **Nahrung sammeln**, um zu überleben </li>
+        <li>💪 **Sich Runde für Runde trainieren und weiterentwickeln** </li>
+        <li>🗺️ **Den Planeten erkunden**, um Geheimnisse zu lüften </li>
+        <li>⚔️ **Feinde bekämpfen**, um ihr Territorium zu verteidigen </li>
+        <li> 🧬 **Sich fortpflanzen**, um die nächste Generation zu sichern</li>
+        </p> 
+        <p>Nur die Stärksten passen sich an und führen die Ape Gang zur Dominanz! Ein rundenbasiertes Multiplayer-Game, in dem Strategie und Skill entscheiden, wer überlebt und wer untergeht. 🏆🔥</p> <p>🐵 **Planet der Ape Gang – Macht euch bereit für den ultimativen Kampf!** 🚀🔥</p>
     </>
   ),
   en: (
     <>
-      <p>Yo Bro, Hey Gangsters, what's up - check this out – the story of the <strong>Ape Gang City Apes</strong>! 🦍🔥</p>
-      
-      <p>Forget yachts, forget golf clubs – <strong>we party in the clubs and streets, we are the future!</strong></p>
-      
-      <p>
-        The <strong>Ape Gang</strong> is a new generation of apes – <strong>wilder, dirtier, hungrier</strong>. 
-        The next generation, but we can't afford to chill rich Bro. 
-        Streets, blocks, nightlife – our playground. We fight for what's ours.
-      </p>
-      
-      <p><strong>What yacht club? We need a hood, a legendary meeting spot, a space where the gang comes together.</strong></p>
-      
-      <ul>
-        <li>🚧 <strong>Ghetto with neon lights instead of villas and pools</strong></li>
-        <li>🎨 <strong>Graffiti on the walls, hip-hop from the speakers</strong></li>
-        <li>🏢 <strong>Chilling in the loft</strong></li>
-        <li>🏎️ <strong>Betting on street races, sick cars, urban jungle</strong></li>
-        <li>🌃 <strong>We are the new GTA</strong></li>
-      </ul>
-      
-      <p>There's only <strong>one thing</strong>: Whoever makes it to the top <strong>becomes a legend</strong>. 💥🚀</p>
-      
-      <p>🔥 <strong>Ape Gang City Apes – Welcome to Ape City and let's start your first Quest!</strong> 🔥</p>
-      <p>🔥 <strong>Quest 1:  – Connect your wallet and conquer planet Q</strong> 🔥</p>
+    🦍 Planet of the Ape Gang – Survive, Evolve, Conquer! 🌍🚀
+<p>Yo Gang, get ready – this is the **Planet of the Ape Gang**! 🦍🔥</p> 
+<p>Stranded on an untamed planet, the **Ape Gang** must fight to survive against 
+  ruthless alien species and unstoppable natural disasters like meteor strikes, v
+  olcanic eruptions, and massive floods. 💥🌋🌊</p> 
+  <p>**Ape Gang Apes** need to hustle: 
+  <li>🍌 **Gather food** to stay strong</li> 
+  <li>💪 **Train and evolve** round by round</li>
+  <li>🗺️ **Explore new territories** to uncover secrets</li>
+  <li>⚔️ **Battle enemies** to defend their kind</li> 
+  <li>🧬 **Reproduce and grow the tribe** for the future</li></p> <p>Survival is the name of the game – only the strongest will adapt and lead the Ape Gang to dominance! A round-based multiplayer experience where strategy and skill determine who thrives and who falls. 🏆🔥</p> <p>🐵 **Planet of the Ape Gang – Get Ready for the Ultimate Battle!** 🚀🔥</p>
+This keeps the hype and energy of the original but aligns it with your new game concept! Let me know if you want any tweaks. 🚀
+
+
+
+
+
+
+
+
+
     </>
   )
 };
