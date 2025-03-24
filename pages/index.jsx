@@ -69,7 +69,7 @@ export default function Home() {
     <div style={{ overflow: 'hidden' }}>
       <main className={styles.main}>
         <img 
-          src="/00035-96663071.png" 
+          src="/00027-2200268156.png" 
           alt="Main Image"
           style={{
             maxWidth: '100%',
