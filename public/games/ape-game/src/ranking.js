@@ -119,30 +119,33 @@ Ranking.prototype.initialize = function(autosave=true) {
 
 		game.players[i].total_score = game.players[i].evo_score + game.players[i].stats.reduce((a, b) => a + b);
 		if(game.players[i].type === PLAYER_TYPE.HUMAN && !game.players[i].is_dead) {
-			console.log("Sending score to server: " + game.players[i].total_score);
-			
-			// Get wallet address safely with fallback
-			const walletAddress = window.gameConfig?.walletAddress || 'unknown';
-			
-			fetch("/api/score", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ 
-					score: game.players[i].total_score,
-					species: SPECIES_NAMES[game.players[i].id] || 'Unknown', // Changed this line
-					timestamp: new Date().toISOString(),
-					walletAddress: walletAddress
+			// Only save score if this is the final turn
+			//if(game.turn === game.max_turns) {
+				console.log("Sending score to server: " + game.players[i].total_score);
+				
+				// Get wallet address safely with fallback
+				const walletAddress = window.gameConfig?.walletAddress || 'unknown';
+				
+				fetch("/api/score", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ 
+						score: game.players[i].total_score,
+						species: SPECIES_NAMES[game.players[i].id] || 'Unknown',
+						timestamp: new Date().toISOString(),
+						walletAddress: walletAddress
+					})
 				})
-			})
-			.then(response => response.json())
-			.then(data => {
-				console.log("Score saved with wallet:", data);
-			})
-			.catch(error => {
-				console.error("Error sending score:", error);
-			});
+				.then(response => response.json())
+				.then(data => {
+					console.log("Score saved with wallet:", data);
+				})
+				.catch(error => {
+					console.error("Error sending score:", error);
+				});
+			//}
 		}
 	}
 
