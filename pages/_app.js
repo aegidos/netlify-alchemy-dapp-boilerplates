@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import { createContext, useContext } from 'react';
 
 // ApeChain Configuration
 const apeChain = {
@@ -55,10 +56,25 @@ const wagmiClient = createClient({
 
 export { WagmiConfig, RainbowKitProvider };
 
+export const WalletContext = createContext();
+
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { address, isConnected } = useAccount();
   const [isClient, setIsClient] = useState(false);
+
+  // Make wallet address available globally
+  useEffect(() => {
+    window.walletContext = {
+      address: address || 'unknown',
+      isConnected
+    };
+  }, [address, isConnected]);
+
+  const walletState = {
+    address: address || '',
+    isConnected
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -78,6 +94,9 @@ function MyApp({ Component, pageProps }) {
 
           if (response.data.totalCount > 0) {
             router.push('/members-only');
+            // Now you can use the address variable to get the connected wallet address
+            console.log('Wallet address in members-only:', address);
+            console.log('walletState in members-only:', walletState);
           } else if (!router.pathname.includes('/members-only')) {
             router.push('/');
           }
@@ -103,9 +122,11 @@ function MyApp({ Component, pageProps }) {
         initialChain={mainnet}
         chains={chains}
       >
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <WalletContext.Provider value={walletState}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </WalletContext.Provider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

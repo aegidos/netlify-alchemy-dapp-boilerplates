@@ -1,5 +1,13 @@
 'use strict';
 
+const SPECIES_NAMES = {
+    0: "PURPLUS",
+    1: "KIWIOPTERYX",
+    2: "PESCIODYPHUS",
+    3: "Ape Gang",
+    4: "AMORPH",
+    5: "CHUCKBERRY"
+};
 
 function Ranking() {
 	this.id = SCENE.RANKING;
@@ -70,7 +78,7 @@ function Ranking() {
 			'pos': [220, 435],
 			'low_anchor': true,
 			'arrows': [{dir: DIR.S, offset: 55}],
-			'highlight': [this.save_offset[0], this.save_offset[1], this.save_offset[0] + this.save_dim[0] - 1, this.save_offset[1] + this.save_dim[1]],
+			'highlight': [this.save_offset[0], this.save_offset[1], this.save_offset[0] + this.save_dim[0] - 1, this.save_dim[1]],
 		},
 	];
 
@@ -110,6 +118,32 @@ Ranking.prototype.initialize = function(autosave=true) {
 		);
 
 		game.players[i].total_score = game.players[i].evo_score + game.players[i].stats.reduce((a, b) => a + b);
+		if(game.players[i].type === PLAYER_TYPE.HUMAN && !game.players[i].is_dead) {
+			console.log("Sending score to server: " + game.players[i].total_score);
+			
+			// Get wallet address safely with fallback
+			const walletAddress = window.gameConfig?.walletAddress || 'unknown';
+			
+			fetch("/api/score", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ 
+					score: game.players[i].total_score,
+					species: SPECIES_NAMES[game.players[i].id] || 'Unknown', // Changed this line
+					timestamp: new Date().toISOString(),
+					walletAddress: walletAddress
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log("Score saved with wallet:", data);
+			})
+			.catch(error => {
+				console.error("Error sending score:", error);
+			});
+		}
 	}
 
 	this.determine_best();

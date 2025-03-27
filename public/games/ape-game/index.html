@@ -17,6 +17,82 @@ input {
 <div id="qpop"></div>
 
 <br><br>
+
+<div id="highscores" style="margin: 20px; padding: 10px; width: 800px;">
+    <h2 style="color: #a0a0a0;">Top 50 Highscores</h2>
+    <table style="width: 100%; border-collapse: collapse; color: #a0a0a0;">
+        <thead>
+            <tr style="border-bottom: 2px solid #404040;">
+                <th style="padding: 8px; text-align: left;">Rank</th>
+                <th style="padding: 8px; text-align: left;">Wallet</th>
+                <th style="padding: 8px; text-align: right;">Score</th>
+                <th style="padding: 8px; text-align: left;">Species</th>
+            </tr>
+        </thead>
+        <tbody id="highscoreTable">
+            <!-- Highscores will be populated here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get wallet address from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const walletAddress = urlParams.get('wallet');
+    
+    // Initialize global game configuration object
+    window.gameConfig = {
+      walletAddress: walletAddress || 'unknown'
+    };
+  });
+
+    function updateHighscores() {
+        fetch('/api/scores')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(scores => {
+                const tableBody = document.getElementById('highscoreTable');
+                tableBody.innerHTML = '';
+                
+                // Sort scores by score value descending
+                scores.sort((a, b) => b.score - a.score)
+                      .slice(0, 50)
+                      .forEach((score, index) => {
+                    const row = document.createElement('tr');
+                    row.style.borderBottom = '1px solid #303030';
+                    
+                    // Truncate wallet address for display
+                    const shortWallet = score.walletAddress.slice(0, 6) + '...' + 
+                                      score.walletAddress.slice(-4);
+                    
+                    row.innerHTML = `
+                        <td style="padding: 8px;">${index + 1}</td>
+                        <td style="padding: 8px;">${shortWallet}</td>
+                        <td style="padding: 8px; text-align: right;">${score.score}</td>
+                        <td style="padding: 8px;">${score.species}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading highscores:', error);
+                document.getElementById('highscoreTable').innerHTML = 
+                    '<tr><td colspan="4" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
+            });
+    }
+
+    // Update highscores when page loads and every 60 seconds
+    document.addEventListener('DOMContentLoaded', () => {
+        updateHighscores();
+        setInterval(updateHighscores, 60000);
+    });
+</script>
+
 <a href="manual/manual_en.html">Manual</a><br>
 <a href="manual/manual_de.html">Anleitung</a> (Manual in German)
 
