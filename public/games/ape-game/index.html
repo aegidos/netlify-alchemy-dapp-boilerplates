@@ -27,6 +27,7 @@ input {
                 <th style="padding: 8px; text-align: left;">Wallet</th>
                 <th style="padding: 8px; text-align: right;">Score</th>
                 <th style="padding: 8px; text-align: left;">Species</th>
+                <th style="padding: 8px; text-align: center;">Turn</th>
             </tr>
         </thead>
         <tbody id="highscoreTable">
@@ -75,6 +76,7 @@ input {
                         <td style="padding: 8px;">${shortWallet}</td>
                         <td style="padding: 8px; text-align: right;">${score.score}</td>
                         <td style="padding: 8px;">${score.species}</td>
+                        <td style="padding: 8px; text-align: center;">${score.turn || '?'}</td>
                     `;
                     tableBody.appendChild(row);
                 });
@@ -82,7 +84,7 @@ input {
             .catch(error => {
                 console.error('Error loading highscores:', error);
                 document.getElementById('highscoreTable').innerHTML = 
-                    '<tr><td colspan="4" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
+                    '<tr><td colspan="5" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
             });
     }
 
