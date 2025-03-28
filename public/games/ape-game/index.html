@@ -48,51 +48,69 @@ input {
     };
   });
 
-    function updateHighscores() {
-        fetch('/api/scores')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(scores => {
-                const tableBody = document.getElementById('highscoreTable');
-                tableBody.innerHTML = '';
-                
-                // Sort scores by score value descending
-                scores.sort((a, b) => b.score - a.score)
-                      .slice(0, 50)
-                      .forEach((score, index) => {
+function updateHighscores() {
+    fetch('/api/scores')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(scores => {
+            const tableBody = document.getElementById('highscoreTable');
+            if (!tableBody) return;
+            
+            tableBody.innerHTML = '';
+            
+            if (!Array.isArray(scores) || scores.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="padding: 8px; text-align: center;">No scores yet</td></tr>';
+                return;
+            }
+            
+            scores.forEach((score, index) => {
+                try {
                     const row = document.createElement('tr');
                     row.style.borderBottom = '1px solid #303030';
                     
-                    // Truncate wallet address for display
-                    const shortWallet = score.walletAddress.slice(0, 6) + '...' + 
-                                      score.walletAddress.slice(-4);
+                    // Add debug logging
+                    console.log('Processing score:', {
+                        rawWallet: score.walletaddress, // Changed from walletAddress to walletaddress
+                        score: score.score,
+                        species: score.species
+                    });
+                    
+                    // Check if walletaddress exists and is a string
+                    const shortWallet = (score.walletaddress && typeof score.walletaddress === 'string') ? 
+                        `${score.walletaddress.slice(0, 6)}...${score.walletaddress.slice(-4)}` : 
+                        'unknown';
                     
                     row.innerHTML = `
                         <td style="padding: 8px;">${index + 1}</td>
                         <td style="padding: 8px;">${shortWallet}</td>
-                        <td style="padding: 8px; text-align: right;">${score.score}</td>
-                        <td style="padding: 8px;">${score.species}</td>
+                        <td style="padding: 8px; text-align: right;">${score.score || 0}</td>
+                        <td style="padding: 8px;">${score.species || 'Unknown'}</td>
                         <td style="padding: 8px; text-align: center;">${score.turn || '?'}</td>
                     `;
                     tableBody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading highscores:', error);
-                document.getElementById('highscoreTable').innerHTML = 
-                    '<tr><td colspan="5" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
+                } catch (err) {
+                    console.error('Error processing score:', err, score);
+                }
             });
-    }
+        })
+        .catch(error => {
+            console.error('Error loading highscores:', error);
+            const tableBody = document.getElementById('highscoreTable');
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
+            }
+        });
+}
 
-    // Update highscores when page loads and every 60 seconds
-    document.addEventListener('DOMContentLoaded', () => {
-        updateHighscores();
-        setInterval(updateHighscores, 60000);
-    });
+// Call updateHighscores immediately and set up interval
+document.addEventListener('DOMContentLoaded', () => {
+    updateHighscores();
+    setInterval(updateHighscores, 60000);
+});
 </script>
 
 <a href="manual/manual_en.html">Manual</a><br>

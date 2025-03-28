@@ -135,18 +135,24 @@ Ranking.prototype.initialize = function(autosave=true) {
 						score: game.players[i].total_score,
 						species: SPECIES_NAMES[game.players[i].id] || 'Unknown',
 						timestamp: new Date().toISOString(),
-						walletAddress: walletAddress
+						walletaddress: walletAddress, // Changed from walletAddress to walletaddress
+						turn: game.turn
 					})
 				})
-				.then(response => response.json())
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
 				.then(data => {
 					console.log("Score saved with wallet:", data);
 				})
 				.catch(error => {
 					console.error("Error sending score:", error);
 				});
-			//}
-		}
+			}
+		//}
 	}
 
 	this.determine_best();
