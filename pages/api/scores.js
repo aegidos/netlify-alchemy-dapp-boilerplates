@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       const { data, error } = await supabase
         .from('scores')
         .select('*')
-        .order('score', { ascending: false })
+        .order('turn', { ascending: false })
         .limit(50);
 
       if (error) throw error;
