@@ -41,7 +41,7 @@ function MembersOnly() {
       <h1>Members Only Content</h1>
       <p>Current Wallet: {address || 'Not connected'}</p> {/* Add this line to verify address */}
       <div style={{
-        width: '800px',
+        width: '900px',
         maxWidth: '100%',
         margin: '0 auto'
       }}>
