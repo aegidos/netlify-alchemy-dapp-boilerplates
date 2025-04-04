@@ -1,0 +1,10 @@
+{
+  "name": "Cure 25%",
+  "description": "A healing potion that restores 25% of the user's health.",
+  "image": "ipfs://QmWUKkQ53ndEBsULZTQkkMKTuMnNCSnvVFk57hP79rfAWC",
+  "attributes": [
+    { "trait_type": "Type", "value": "Potion" },
+    { "trait_type": "Rarity", "value": "I" },
+    { "trait_type": "Required for", "value": "I" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Magic Mana + Cure Elixir",
+  "description": "A powerful potion that restores both magic and health, highly sought after by sorcerers.",
+  "image": "ipfs://QmcfNkNoamAeFqWhkhbSYsYNaRGt7qUNgiuWfN644NEcY7",
+  "attributes": [
+    { "trait_type": "Type", "value": "Potion" },
+    { "trait_type": "Rarity", "value": "G" },
+    { "trait_type": "Required for", "value": "J" }
+  ]
+}

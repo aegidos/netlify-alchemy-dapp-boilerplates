@@ -1,0 +1,11 @@
+{
+  "name": "Cure 25",
+  "description": "Evolved Elixir NFT Type I",
+  "image": "ipfs://QmWUKkQ53ndEBsULZTQkkMKTuMnNCSnvVFk57hP79rfAWC",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "IPNG"
+    }
+  ]
+}

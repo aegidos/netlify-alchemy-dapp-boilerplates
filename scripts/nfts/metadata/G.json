@@ -1,0 +1,11 @@
+{
+  "name": "Magic Mana + Cure",
+  "description": "Evolved Elixir NFT Type G",
+  "image": "ipfs://QmcfNkNoamAeFqWhkhbSYsYNaRGt7qUNgiuWfN644NEcY7",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "GPNG"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Blueleaf",
+  "description": "Blueleaf Base NFT Type D",
+  "image": "ipfs://QmNtKGGGTvKjw4zbKKUFgoPLcVSPAfNSfy5HCYn5uQyCa8",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "DPNG"
+    }
+  ]
+}

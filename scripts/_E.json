@@ -1,0 +1,10 @@
+{
+  "name": "Stinkballtrees",
+  "description": "Spiky trees with foul-smelling fruits that are difficult to harvest.",
+  "image": "ipfs://QmSG6xPaEpBvFAeGUizVpu1q3CmFEa3aFLbZXWLC3g4zLN",
+  "attributes": [
+    { "trait_type": "Type", "value": "Plant" },
+    { "trait_type": "Rarity", "value": "E" },
+    { "trait_type": "Required for", "value": "H & J" }
+  ]
+}

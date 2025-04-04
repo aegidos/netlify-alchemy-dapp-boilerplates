@@ -1,0 +1,10 @@
+{
+  "name": "Hushrooms",
+  "description": "Mushrooms that only bloom under moonlight, known for their strong sedative effects.",
+  "image": "ipfs://QmbULkPpdqvVYowpHrQ2Mk6unCgdygLJ13Wx9aqZhwDwWo",
+  "attributes": [
+    { "trait_type": "Type", "value": "Plant" },
+    { "trait_type": "Rarity", "value": "A" },
+    { "trait_type": "Required for", "value": "H" }
+  ]
+}

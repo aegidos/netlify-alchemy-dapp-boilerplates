@@ -1,0 +1,11 @@
+{
+  "name": "Snakeroots",
+  "description": "Snakeroots Base NFT Type F",
+  "image": "ipfs://QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "FPNG"
+    }
+  ]
+}

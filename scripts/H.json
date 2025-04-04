@@ -1,0 +1,10 @@
+{
+  "name": "Mana Elixir",
+  "description": "A potion that enhances the magical abilities of the user.",
+  "image": "ipfs://QmYbL9PWdHBuQicsJck93sLFbVicL5exvEPEC6vRFzLsDx",
+  "attributes": [
+    { "trait_type": "Type", "value": "Potion" },
+    { "trait_type": "Rarity", "value": "H" },
+    { "trait_type": "Required for", "value": "H" }
+  ]
+}

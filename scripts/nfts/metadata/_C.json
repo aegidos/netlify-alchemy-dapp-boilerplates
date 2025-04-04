@@ -1,0 +1,11 @@
+{
+  "name": "Rangones",
+  "description": "Rangones Base NFT Type C",
+  "image": "ipfs://QmfVtANDxR6gdXxhNycjdm75UTKtzsX2ckMuhzLodfz1nv",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "CPNG"
+    }
+  ]
+}

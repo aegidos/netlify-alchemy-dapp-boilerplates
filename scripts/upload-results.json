@@ -1,0 +1,82 @@
+[
+  {
+    "file": "_A.png",
+    "name": "Hushrooms",
+    "imageUrl": "ipfs://QmbULkPpdqvVYowpHrQ2Mk6unCgdygLJ13Wx9aqZhwDwWo",
+    "metadataUrl": "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
+    "imageIpfsHash": "QmbULkPpdqvVYowpHrQ2Mk6unCgdygLJ13Wx9aqZhwDwWo",
+    "metadataIpfsHash": "QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS"
+  },
+  {
+    "file": "_B.png",
+    "name": "Firegrassbush",
+    "imageUrl": "ipfs://Qmb5k8VwMTkNBCpd4Nng99euurm8TV3Qq2U9X8K7WG7rbW",
+    "metadataUrl": "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",
+    "imageIpfsHash": "Qmb5k8VwMTkNBCpd4Nng99euurm8TV3Qq2U9X8K7WG7rbW",
+    "metadataIpfsHash": "QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX"
+  },
+  {
+    "file": "_C.png",
+    "name": "Rangones",
+    "imageUrl": "ipfs://QmfVtANDxR6gdXxhNycjdm75UTKtzsX2ckMuhzLodfz1nv",
+    "metadataUrl": "ipfs://QmcXS6SK3bHyJBJ1R3FC3BUpqewnkFQ2FgyJCbGsEQqER3",
+    "imageIpfsHash": "QmfVtANDxR6gdXxhNycjdm75UTKtzsX2ckMuhzLodfz1nv",
+    "metadataIpfsHash": "QmcXS6SK3bHyJBJ1R3FC3BUpqewnkFQ2FgyJCbGsEQqER3"
+  },
+  {
+    "file": "_D.png",
+    "name": "Blueleaf",
+    "imageUrl": "ipfs://QmNtKGGGTvKjw4zbKKUFgoPLcVSPAfNSfy5HCYn5uQyCa8",
+    "metadataUrl": "ipfs://QmW46bZWJ4SerBPZsidVuFiC81s44L5Py3jKWcAjyipU4v",
+    "imageIpfsHash": "QmNtKGGGTvKjw4zbKKUFgoPLcVSPAfNSfy5HCYn5uQyCa8",
+    "metadataIpfsHash": "QmW46bZWJ4SerBPZsidVuFiC81s44L5Py3jKWcAjyipU4v"
+  },
+  {
+    "file": "_E.png",
+    "name": "Stinkballtrees",
+    "imageUrl": "ipfs://QmSG6xPaEpBvFAeGUizVpu1q3CmFEa3aFLbZXWLC3g4zLN",
+    "metadataUrl": "ipfs://QmWJXoKabfQmuw4tfeVbbDgFGh6PxNNhk6Q9HDsiZ55ot6",
+    "imageIpfsHash": "QmSG6xPaEpBvFAeGUizVpu1q3CmFEa3aFLbZXWLC3g4zLN",
+    "metadataIpfsHash": "QmWJXoKabfQmuw4tfeVbbDgFGh6PxNNhk6Q9HDsiZ55ot6"
+  },
+  {
+    "file": "_F.png",
+    "name": "Snakeroots",
+    "imageUrl": "ipfs://QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf",
+    "metadataUrl": "ipfs://QmfSNNu6DMMsLyN8AHVZ1QWvP6ZyYwW73qxitJVwQ49CoH",
+    "imageIpfsHash": "QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf",
+    "metadataIpfsHash": "QmfSNNu6DMMsLyN8AHVZ1QWvP6ZyYwW73qxitJVwQ49CoH"
+  },
+  {
+    "file": "G.png",
+    "name": "Magic Mana + Cure",
+    "imageUrl": "ipfs://QmcfNkNoamAeFqWhkhbSYsYNaRGt7qUNgiuWfN644NEcY7",
+    "metadataUrl": "ipfs://QmNomcC1BGbe7d25E83HS4mct3dcKHzwZrtAukjaNdmSNE",
+    "imageIpfsHash": "QmcfNkNoamAeFqWhkhbSYsYNaRGt7qUNgiuWfN644NEcY7",
+    "metadataIpfsHash": "QmNomcC1BGbe7d25E83HS4mct3dcKHzwZrtAukjaNdmSNE"
+  },
+  {
+    "file": "H.png",
+    "name": "Mana",
+    "imageUrl": "ipfs://QmYbL9PWdHBuQicsJck93sLFbVicL5exvEPEC6vRFzLsDx",
+    "metadataUrl": "ipfs://QmP2hTgNrsEMFp4nw4ruiQQ3Y2V3b1yhQHcyXXHdCcraDC",
+    "imageIpfsHash": "QmYbL9PWdHBuQicsJck93sLFbVicL5exvEPEC6vRFzLsDx",
+    "metadataIpfsHash": "QmP2hTgNrsEMFp4nw4ruiQQ3Y2V3b1yhQHcyXXHdCcraDC"
+  },
+  {
+    "file": "I.png",
+    "name": "Cure 25",
+    "imageUrl": "ipfs://QmWUKkQ53ndEBsULZTQkkMKTuMnNCSnvVFk57hP79rfAWC",
+    "metadataUrl": "ipfs://QmSm9WzoU6GdBTV3ahHursSKN3sqtF4VRp7kQZa4PJjiW5",
+    "imageIpfsHash": "QmWUKkQ53ndEBsULZTQkkMKTuMnNCSnvVFk57hP79rfAWC",
+    "metadataIpfsHash": "QmSm9WzoU6GdBTV3ahHursSKN3sqtF4VRp7kQZa4PJjiW5"
+  },
+  {
+    "file": "J.png",
+    "name": "Cure 50",
+    "imageUrl": "ipfs://QmXZR6F73rWZNXEWnNQLYy8aCsyULoHFnwvbGs89Ni454t",
+    "metadataUrl": "ipfs://QmRDDuFwnsz29DchzQUG4WqwkskpcaKZCH5BAJyTtWj74r",
+    "imageIpfsHash": "QmXZR6F73rWZNXEWnNQLYy8aCsyULoHFnwvbGs89Ni454t",
+    "metadataIpfsHash": "QmRDDuFwnsz29DchzQUG4WqwkskpcaKZCH5BAJyTtWj74r"
+  }
+]

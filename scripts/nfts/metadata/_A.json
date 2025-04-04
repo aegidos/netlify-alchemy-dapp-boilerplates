@@ -1,0 +1,11 @@
+{
+  "name": "Hushrooms",
+  "description": "Hushrooms Base NFT Type A",
+  "image": "ipfs://QmbULkPpdqvVYowpHrQ2Mk6unCgdygLJ13Wx9aqZhwDwWo",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "APNG"
+    }
+  ]
+}

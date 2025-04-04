@@ -126,6 +126,7 @@ Ranking.prototype.initialize = function(autosave=true) {
 				// Get wallet address safely with fallback
 				const walletAddress = window.gameConfig?.walletAddress || 'unknown';
 				
+				// First save score
 				fetch("/api/score", {
 					method: "POST",
 					headers: {
@@ -135,22 +136,29 @@ Ranking.prototype.initialize = function(autosave=true) {
 						score: game.players[i].total_score,
 						species: SPECIES_NAMES[game.players[i].id] || 'Unknown',
 						timestamp: new Date().toISOString(),
-						walletaddress: walletAddress, // Changed from walletAddress to walletaddress
+						walletaddress: walletAddress,
 						turn: game.turn
 					})
 				})
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					return response.json();
-				})
+				.then(response => response.json())
 				.then(data => {
-					console.log("Score saved with wallet:", data);
+					console.log("Score saved:", data);
+					
+					// Then mint NFT
+					return fetch("/api/mint", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							walletAddress,
+							score: game.players[i].total_score
+						})
+					});
 				})
-				.catch(error => {
-					console.error("Error sending score:", error);
-				});
+				.then(response => response.json())
+				.then(data => {
+					console.log("NFT minted:", data);
+				})
+				.catch(error => console.error("Error:", error));
 			}
 		//}
 	}

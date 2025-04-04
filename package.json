@@ -10,6 +10,7 @@
 		"marketplace": "npx create-web3-dapp marketplace"
 	},
 	"dependencies": {
+		"@openzeppelin/contracts": "^5.2.0",
 		"@rainbow-me/rainbowkit": "^0.12.4",
 		"@supabase/supabase-js": "^2.49.3",
 		"alchemy-sdk": "^2.6.2",
@@ -17,10 +18,16 @@
 		"next": "13.1.2",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"viem": "^2.25.0",
 		"wagmi": "^0.12.6"
 	},
 	"devDependencies": {
+		"@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+		"@nomicfoundation/hardhat-verify": "^2.0.13",
+		"@nomiclabs/hardhat-ethers": "^2.2.3",
+		"dotenv": "^16.4.7",
 		"eslint": "8.36.0",
-		"eslint-config-next": "13.2.4"
+		"eslint-config-next": "13.2.4",
+		"hardhat": "^2.22.19"
 	}
 }

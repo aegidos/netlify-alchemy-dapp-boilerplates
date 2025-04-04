@@ -1,0 +1,20 @@
+{
+  "contractAddress": "0xfc012b768648becf19f79e70d37b4a76a8e5bd0f",
+  "chainId": 33111,
+  "deployer": "0x939ac38d9ee95e0e01b88086aab47786f8e61f5f",
+  "timestamp": "2025-04-04T19:59:05.466Z",
+  "baseURIs": [
+    "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
+    "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",
+    "ipfs://QmcXS6SK3bHyJBJ1R3FC3BUpqewnkFQ2FgyJCbGsEQqER3",
+    "ipfs://QmW46bZWJ4SerBPZsidVuFiC81s44L5Py3jKWcAjyipU4v",
+    "ipfs://QmWJXoKabfQmuw4tfeVbbDgFGh6PxNNhk6Q9HDsiZ55ot6",
+    "ipfs://QmfSNNu6DMMsLyN8AHVZ1QWvP6ZyYwW73qxitJVwQ49CoH"
+  ],
+  "evolvedURIs": [
+    "ipfs://QmNomcC1BGbe7d25E83HS4mct3dcKHzwZrtAukjaNdmSNE",
+    "ipfs://QmP2hTgNrsEMFp4nw4ruiQQ3Y2V3b1yhQHcyXXHdCcraDC",
+    "ipfs://QmSm9WzoU6GdBTV3ahHursSKN3sqtF4VRp7kQZa4PJjiW5",
+    "ipfs://QmRDDuFwnsz29DchzQUG4WqwkskpcaKZCH5BAJyTtWj74r"
+  ]
+}

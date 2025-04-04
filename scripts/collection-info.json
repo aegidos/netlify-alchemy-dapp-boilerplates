@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "value": {
+    "message": "Collection created.",
+    "collectionID": "c2db579a-3493-4355-a385-b8ccbde553b8"
+  },
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "timestamp": "2025-04-03T11:39:26.364Z"
+}

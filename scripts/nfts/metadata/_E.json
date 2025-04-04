@@ -1,0 +1,11 @@
+{
+  "name": "Stinkballtrees",
+  "description": "Stinkballtrees Base NFT Type E",
+  "image": "ipfs://QmSG6xPaEpBvFAeGUizVpu1q3CmFEa3aFLbZXWLC3g4zLN",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "EPNG"
+    }
+  ]
+}

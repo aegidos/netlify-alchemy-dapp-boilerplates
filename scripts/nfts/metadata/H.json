@@ -1,0 +1,11 @@
+{
+  "name": "Mana",
+  "description": "Evolved Elixir NFT Type H",
+  "image": "ipfs://QmYbL9PWdHBuQicsJck93sLFbVicL5exvEPEC6vRFzLsDx",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "HPNG"
+    }
+  ]
+}

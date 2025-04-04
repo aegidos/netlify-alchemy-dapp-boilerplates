@@ -1,0 +1,11 @@
+{
+  "name": "Firegrassbush",
+  "description": "Firegrassbush Base NFT Type B",
+  "image": "ipfs://Qmb5k8VwMTkNBCpd4Nng99euurm8TV3Qq2U9X8K7WG7rbW",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "BPNG"
+    }
+  ]
+}

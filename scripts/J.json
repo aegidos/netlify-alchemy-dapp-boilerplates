@@ -1,0 +1,10 @@
+{
+  "name": "Cure 50%",
+  "description": "A stronger healing potion that restores 50% of the user's health.",
+  "image": "ipfs://QmXZR6F73rWZNXEWnNQLYy8aCsyULoHFnwvbGs89Ni454t",
+  "attributes": [
+    { "trait_type": "Type", "value": "Potion" },
+    { "trait_type": "Rarity", "value": "J" },
+    { "trait_type": "Required for", "value": "J" }
+  ]
+}

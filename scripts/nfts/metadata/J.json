@@ -1,0 +1,11 @@
+{
+  "name": "Cure 50",
+  "description": "Evolved Elixir NFT Type J",
+  "image": "ipfs://QmXZR6F73rWZNXEWnNQLYy8aCsyULoHFnwvbGs89Ni454t",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "JPNG"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Snakeroots",
+  "description": "Roots that twist and curl like snakes, holding powerful mystical energy.",
+  "image": "ipfs://QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf",
+  "attributes": [
+    { "trait_type": "Type", "value": "Plant" },
+    { "trait_type": "Rarity", "value": "F" },
+    { "trait_type": "Required for", "value": "G" }
+  ]
+}

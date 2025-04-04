@@ -1,0 +1,11 @@
+{
+  "name": "Rangones",
+  "description": "A rare plant that thrives in mystical forests, known for its strong healing properties.",
+  "image": "ipfs://QmfVtANDxR6gdXxhNycjdm75UTKtzsX2ckMuhzLodfz1nv",
+  "attributes": [
+    { "trait_type": "Type", "value": "Plant" },
+    { "trait_type": "Rarity", "value": "C" },
+    { "trait_type": "Required for", "value": "J" }
+  ]
+}
+
