@@ -13,6 +13,8 @@ const ABI = [
   }
 ];
 
+const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+const ALCHEMY_API_URL = `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}/getNFTsForOwner`;
 const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';
 const APECHAIN_RPC = 'https://apechain.calderachain.xyz/http';
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Add this to .env

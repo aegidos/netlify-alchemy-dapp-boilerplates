@@ -86,6 +86,16 @@ export default function MembersOnly() {
     }
   }, [isConnected, isClient, router]);
 
+  useEffect(() => {
+    const handleMintRequest = (event) => {
+        console.log('Mint requested from game:', event.detail);
+        mintNFT();
+    };
+
+    window.addEventListener('requestMint', handleMintRequest);
+    return () => window.removeEventListener('requestMint', handleMintRequest);
+  }, []);
+
   const fetchNFTs = async () => {
     if (!address) return;
 
@@ -331,49 +341,15 @@ export default function MembersOnly() {
         )}
       </div>
 
-      <div style={{
-        margin: '2rem 0',
-        padding: '2rem',
-        backgroundColor: '#222',
-        borderRadius: '10px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ color: '#f8f8f8', marginBottom: '1.5rem' }}>🔮 Get Free ApeChain NFT</h2>
-        <button 
-          onClick={mintNFT}
-          disabled={isMinting}
-          style={{
-            backgroundColor: '#ffd700',
-            color: '#000',
-            border: 'none',
-            padding: '12px 24px',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            borderRadius: '6px',
-            cursor: isMinting ? 'not-allowed' : 'pointer',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-          }}
-        >
-          {isMinting ? '⏳ MINTING...' : '⚡ MINT NOW'}
-        </button>
-        
-        {mintStatus && (
-          <div style={{
-            marginTop: '1rem',
-            padding: '10px',
-            backgroundColor: mintStatus.includes('Error') ? '#ff000022' : '#00ff0022',
-            borderRadius: '4px',
-            color: '#f8f8f8'
-          }}>
-            {mintStatus}
-          </div>
-        )}
-        
-        <p style={{ marginTop: '1rem', fontSize: '14px', color: '#aaa' }}>
-          Mint a unique ApeChain NFT directly to your wallet.
-        </p>
-      </div>
+      {/* Hidden mint button for game interaction */}
+      <button 
+        onClick={mintNFT}
+        disabled={isMinting}
+        data-mint-button="true"
+        style={{ display: 'none' }}
+      >
+        Mint NFT
+      </button>
 
       <div style={{ 
         padding: '2rem', 

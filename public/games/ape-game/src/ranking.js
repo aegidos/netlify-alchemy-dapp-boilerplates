@@ -124,42 +124,7 @@ Ranking.prototype.initialize = function(autosave=true) {
         if(game.players[i].type === PLAYER_TYPE.HUMAN && !game.players[i].is_dead) {
             console.log("Sending score to server: " + game.players[i].total_score);
             
-            // Get wallet address safely with fallback
-            const walletAddress = window.gameConfig?.walletAddress || 'unknown';
-            
-            // First save score
-            fetch("/api/score", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ 
-                    score: game.players[i].total_score,
-                    species: SPECIES_NAMES[game.players[i].id] || 'Unknown',
-                    timestamp: new Date().toISOString(),
-                    walletaddress: walletAddress,
-                    turn: game.turn
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Score saved:", data);
-                
-                // Make API request to mint NFT
-                return fetch("/api/mint", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        walletAddress,
-                        score: game.players[i].total_score
-                    })
-                });
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("NFT mint request sent:", data);
-            })
-            .catch(error => console.error("Error:", error));
+            this.saveScore(i);
         }
     }
 
@@ -480,4 +445,42 @@ Ranking.prototype.save_game = function() {
     }
 
     game.save_game();
+};
+
+
+// Replace the fetch call with this
+function triggerMintButton() {
+    try {
+        // Find the parent window's mint button
+        const parentWindow = window.parent;
+        const mintButton = parentWindow.document.querySelector('button[data-mint-button="true"]');
+        
+        if (mintButton) {
+            console.log('Found mint button, triggering click');
+            mintButton.click();
+        } else {
+            console.error('Mint button not found');
+        }
+    } catch (error) {
+        console.error('Error triggering mint:', error);
+    }
+}
+
+// Update your score saving function
+Ranking.prototype.saveScore = function(i) {
+    if (game.players[i].total_score > 0) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const walletAddress = urlParams.get('wallet');
+        
+        if (walletAddress) {
+            // Dispatch custom event to parent window
+            const mintEvent = new CustomEvent('requestMint', {
+                detail: {
+                    address: walletAddress,
+                    score: game.players[i].total_score
+                }
+            });
+            window.parent.dispatchEvent(mintEvent);
+        }
+    }
 };
