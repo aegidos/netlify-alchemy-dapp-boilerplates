@@ -4,8 +4,10 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
+
+contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable { // Add Pausable
     uint256 public tokenCounter;
     uint256 public constant MAX_MINTS_PER_WALLET = 12;
 
@@ -28,6 +30,8 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
 
     event NFTMinted(address indexed miner, uint256 tokenId, uint8 nftType);
     event NFTBurned(uint256[] burnedTokens, uint256 newTokenId, uint8 newType);
+    event MintingPaused(address indexed pauser);
+    event MintingUnpaused(address indexed unpauser);
 
     constructor(string[6] memory _baseNftURIs, string[4] memory _evolvedNftURIs)
         ERC721("ApeChain PoW NFT", "APOW")
@@ -36,19 +40,19 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
         baseNftURIs = _baseNftURIs;
         evolvedNftURIs = _evolvedNftURIs;
 
-        // Set up burn recipes
+        // Set up burn recipes G
         recipes.push(Recipe(new uint8[](2), 6, _evolvedNftURIs[0])); // E + F = G
         recipes[0].ingredients[0] = 4;
         recipes[0].ingredients[1] = 5;
-
+        // H
         recipes.push(Recipe(new uint8[](2), 7, _evolvedNftURIs[1])); // C + D = H
         recipes[1].ingredients[0] = 2;
         recipes[1].ingredients[1] = 3;
-
+        // I
         recipes.push(Recipe(new uint8[](2), 8, _evolvedNftURIs[2])); // B + F = I
         recipes[2].ingredients[0] = 1;
         recipes[2].ingredients[1] = 5;
-
+        // J
         recipes.push(Recipe(new uint8[](3), 9, _evolvedNftURIs[3])); // A + D + F = J
         recipes[3].ingredients[0] = 0;
         recipes[3].ingredients[1] = 3;
@@ -57,7 +61,20 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
         _setDefaultRoyalty(msg.sender, 500);
     }
 
-    function mint(address to) public {
+    // Pause minting - only owner can call
+    function pauseMinting() public onlyOwner {
+        _pause();
+        emit MintingPaused(msg.sender);
+    }
+
+    // Unpause minting - only owner can call
+    function unpauseMinting() public onlyOwner {
+        _unpause();
+        emit MintingUnpaused(msg.sender);
+    }
+
+    // Add whenNotPaused modifier to mint function
+    function mint(address to) public whenNotPaused {
         require(numMinted[msg.sender] < MAX_MINTS_PER_WALLET, "Max mints per wallet reached");
 
         uint256 randomType = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, tokenCounter))) % 6;
@@ -74,6 +91,7 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
         emit NFTMinted(msg.sender, newTokenId, uint8(randomType));
     }
 
+    // Keep burnAndMint available even when minting is paused
     function burnAndMint(uint256[] calldata tokenIds) public {
         require(tokenIds.length > 0, "Must burn at least one token");
 
@@ -128,5 +146,10 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    // Check if minting is currently paused
+    function isMintingPaused() public view returns (bool) {
+        return paused();
     }
 }

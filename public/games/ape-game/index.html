@@ -73,11 +73,11 @@ function updateHighscores() {
                     row.style.borderBottom = '1px solid #303030';
                     
                     // Add debug logging
-                    console.log('Processing score:', {
-                        rawWallet: score.walletaddress, // Changed from walletAddress to walletaddress
-                        score: score.score,
-                        species: score.species
-                    });
+                    // console.log('Processing score:', {
+                    //     rawWallet: score.walletaddress, // Changed from walletAddress to walletaddress
+                    //     score: score.score,
+                    //     species: score.species
+                    // });
                     
                     // Check if walletaddress exists and is a string
                     const shortWallet = (score.walletaddress && typeof score.walletaddress === 'string') ? 

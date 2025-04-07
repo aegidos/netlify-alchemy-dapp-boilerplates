@@ -117,6 +117,7 @@ data/scores.json
 # Exclude artifacts directory
 artifacts/
 **/artifacts/
+artifacts
 
 # Other common exclusions
 node_modules/
