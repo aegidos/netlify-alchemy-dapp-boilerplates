@@ -109,3 +109,22 @@ dist
 .tern-port
 data/scores.json
 .env
+# Exclude specific files
+*flattened.sol
+*.env.swp
+.env.swp
+
+# Exclude artifacts directory
+artifacts/
+**/artifacts/
+
+# Other common exclusions
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage/
+coverage.json
+typechain/
+typechain-types/

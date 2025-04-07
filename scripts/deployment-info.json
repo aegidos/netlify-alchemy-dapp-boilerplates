@@ -1,8 +1,8 @@
 {
-  "contractAddress": "0xfc012b768648becf19f79e70d37b4a76a8e5bd0f",
-  "chainId": 33111,
-  "deployer": "0x939ac38d9ee95e0e01b88086aab47786f8e61f5f",
-  "timestamp": "2025-04-04T19:59:05.466Z",
+  "contractAddress": "0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d",
+  "chainId": 33139,
+  "deployer": "0x53aa577071e848c2789159842051f992dc22bb51",
+  "timestamp": "2025-04-06T13:57:33.877Z",
   "baseURIs": [
     "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
     "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",

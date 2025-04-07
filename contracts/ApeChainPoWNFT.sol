@@ -6,12 +6,17 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
-    uint256 public difficulty = 2**160;
     uint256 public tokenCounter;
+    uint256 public constant MAX_MINTS_PER_WALLET = 12;
 
-    // NFT Type Limits
     uint256[6] public NFT_LIMITS = [150, 600, 800, 1000, 1000, 1300];
     uint256[6] public NFT_MINTED;
+
+    mapping(uint256 => uint8) public tokenTypes;
+    mapping(address => uint256) public numMinted;
+
+    string[6] public baseNftURIs;
+    string[4] public evolvedNftURIs;
 
     struct Recipe {
         uint8[] ingredients;
@@ -20,35 +25,31 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
     }
 
     Recipe[] public recipes;
-    mapping(address => uint256) public numMinted;
-    uint256 public constant MAX_MINTS_PER_WALLET = 12;
-    mapping(address => uint256) public minedBlock;
-    mapping(uint256 => uint8) public tokenTypes;
-    string[6] public baseNftURIs;
 
+    event NFTMinted(address indexed miner, uint256 tokenId, uint8 nftType);
     event NFTBurned(uint256[] burnedTokens, uint256 newTokenId, uint8 newType);
-    event NFTMinted(address miner, uint256 tokenId, uint8 nftType);
 
-    constructor(string[6] memory _baseURIs, string[4] memory _evolvedURIs) 
-        ERC721("ApeChain PoW NFT", "APOW") 
-        Ownable(msg.sender) 
+    constructor(string[6] memory _baseNftURIs, string[4] memory _evolvedNftURIs)
+        ERC721("ApeChain PoW NFT", "APOW")
+        Ownable(msg.sender)
     {
-        baseNftURIs = _baseURIs;
+        baseNftURIs = _baseNftURIs;
+        evolvedNftURIs = _evolvedNftURIs;
 
-        // Set up burn recipes correctly
-        recipes.push(Recipe(new uint8[](2), 6, _evolvedURIs[0])); // E + F = G
+        // Set up burn recipes
+        recipes.push(Recipe(new uint8[](2), 6, _evolvedNftURIs[0])); // E + F = G
         recipes[0].ingredients[0] = 4;
         recipes[0].ingredients[1] = 5;
 
-        recipes.push(Recipe(new uint8[](2), 7, _evolvedURIs[1])); // C + D = H
+        recipes.push(Recipe(new uint8[](2), 7, _evolvedNftURIs[1])); // C + D = H
         recipes[1].ingredients[0] = 2;
         recipes[1].ingredients[1] = 3;
 
-        recipes.push(Recipe(new uint8[](2), 8, _evolvedURIs[2])); // B + F = I
+        recipes.push(Recipe(new uint8[](2), 8, _evolvedNftURIs[2])); // B + F = I
         recipes[2].ingredients[0] = 1;
         recipes[2].ingredients[1] = 5;
 
-        recipes.push(Recipe(new uint8[](3), 9, _evolvedURIs[3])); // A + D + F = J
+        recipes.push(Recipe(new uint8[](3), 9, _evolvedNftURIs[3])); // A + D + F = J
         recipes[3].ingredients[0] = 0;
         recipes[3].ingredients[1] = 3;
         recipes[3].ingredients[2] = 5;
@@ -56,58 +57,75 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable {
         _setDefaultRoyalty(msg.sender, 500);
     }
 
-    // Improved random NFT type generation
-    function getRandomNFTType(address sender, uint256 blockNumber) internal pure returns (uint256) {
-        uint256 randomNumber = uint256(keccak256(abi.encodePacked(sender, blockNumber)));
-        // Ensure we only get numbers 0-5 for base NFTs (A-F)
-        return randomNumber % 6;
-    }
-
     function mint(address to) public {
         require(numMinted[msg.sender] < MAX_MINTS_PER_WALLET, "Max mints per wallet reached");
-        
-        // Generate random type (0-5 only)
-        uint256 randomType = getRandomNFTType(msg.sender, block.number);
-        require(randomType < 6, "Invalid NFT type generated");
+
+        uint256 randomType = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, tokenCounter))) % 6;
         require(NFT_MINTED[randomType] < NFT_LIMITS[randomType], "NFT type limit reached");
 
-        uint256 newTokenId = tokenCounter;
-        tokenCounter++;
-
+        uint256 newTokenId = tokenCounter++;
         _safeMint(to, newTokenId);
-        
-        // Add error checking for URI
-        require(bytes(baseNftURIs[randomType]).length > 0, "Invalid URI for NFT type");
         _setTokenURI(newTokenId, baseNftURIs[randomType]);
-        
+
         tokenTypes[newTokenId] = uint8(randomType);
         NFT_MINTED[randomType]++;
         numMinted[msg.sender]++;
-        minedBlock[msg.sender] = block.number;
 
         emit NFTMinted(msg.sender, newTokenId, uint8(randomType));
     }
 
-    function remainingMints(address wallet) public view returns (uint256) {
-        return MAX_MINTS_PER_WALLET - numMinted[wallet];
+    function burnAndMint(uint256[] calldata tokenIds) public {
+        require(tokenIds.length > 0, "Must burn at least one token");
+
+        uint8[] memory types = new uint8[](tokenIds.length);
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            require(ownerOf(tokenIds[i]) == msg.sender, "Not owner of token");
+            types[i] = tokenTypes[tokenIds[i]];
+            _burn(tokenIds[i]);
+        }
+
+        (bool recipeFound, uint8 resultType, string memory resultURI) = findRecipe(types);
+        require(recipeFound, "No valid recipe found");
+
+        uint256 newTokenId = tokenCounter++;
+        _safeMint(msg.sender, newTokenId);
+        _setTokenURI(newTokenId, resultURI);
+        tokenTypes[newTokenId] = resultType;
+
+        emit NFTBurned(tokenIds, newTokenId, resultType);
     }
 
-    function tokenURI(uint256 tokenId) 
-        public 
-        view 
-        virtual 
-        override(ERC721URIStorage) 
-        returns (string memory) 
+    function findRecipe(uint8[] memory types)
+        internal
+        view
+        returns (
+            bool,
+            uint8,
+            string memory
+        )
     {
-        return super.tokenURI(tokenId);
+        for (uint256 i = 0; i < recipes.length; i++) {
+            if (types.length == recipes[i].ingredients.length) {
+                bool matches = true;
+                for (uint256 j = 0; j < types.length; j++) {
+                    if (types[j] != recipes[i].ingredients[j]) {
+                        matches = false;
+                        break;
+                    }
+                }
+                if (matches) {
+                    return (true, recipes[i].result, recipes[i].resultURI);
+                }
+            }
+        }
+        return (false, 0, "");
     }
 
-    function supportsInterface(bytes4 interfaceId) 
-        public 
-        view 
-        virtual 
-        override(ERC721URIStorage, ERC2981) 
-        returns (bool) 
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721URIStorage, ERC2981)
+        returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }

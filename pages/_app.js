@@ -26,7 +26,12 @@ const apeChain = {
     decimals: 18,
   },
   rpcUrls: {
-    default: 'https://apechain.calderachain.xyz/http',
+    public: {
+      http: ['https://apechain.calderachain.xyz/http'],
+    },
+    default: {
+      http: ['https://apechain.calderachain.xyz/http'],
+    },
   },
   blockExplorers: {
     default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
@@ -35,11 +40,13 @@ const apeChain = {
 };
 
 const { chains, provider } = configureChains(
+  [apeChain],
   [
-    mainnet,
-   
-  ],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}), publicProvider()]
+    alchemyProvider({ 
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
+    }), 
+    publicProvider()
+  ]
 );
 
 const { connectors } = getDefaultWallets({
@@ -119,7 +126,7 @@ function MyApp({ Component, pageProps }) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         modalSize="compact"
-        initialChain={mainnet}
+        initialChain={apeChain}
         chains={chains}
       >
         <WalletContext.Provider value={walletState}>

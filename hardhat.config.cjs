@@ -36,15 +36,16 @@ const config = {
   },
   etherscan: {
     apiKey: {
-      curtis: ETHERSCAN_API_KEY
+      curtis: ETHERSCAN_API_KEY,
+      apechain: 'NO_API_KEY_NEEDED'  // Changed from 'apechain'
     },
     customChains: [
       {
         network: "apechain",
         chainId: 33139,
         urls: {
-          apiURL: "https://apechain.calderachain.xyz/http",
-          browserURL: "https://apechain.calderachain.xyz/http"
+          apiURL: "https://apechain.calderaexplorer.xyz/api",  // Updated explorer API URL
+          browserURL: "https://apechain.calderaexplorer.xyz"    // Updated explorer URL
         }
       },
       {

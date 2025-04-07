@@ -1,6 +1,8 @@
 import styles from "../styles/Home.module.css";
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAccount, useConnect } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
 
 const translations = {
   de: (
@@ -48,6 +50,33 @@ This keeps the hype and energy of the original but aligns it with your new game 
 export default function Home() {
   const router = useRouter();
   const [language, setLanguage] = useState('de');
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+
+  useEffect(() => {
+    const gameFrame = document.getElementById('qpop');
+    if (gameFrame && gameFrame.contentWindow) {
+      const passProvidersToGame = () => {
+        try {
+          gameFrame.contentWindow.ethers = window.ethersLib;
+          gameFrame.contentWindow.ethereum = window.ethereum;
+          gameFrame.contentWindow.gameConfig = {
+            walletAddress: address,
+            isConnected: isConnected
+          };
+        } catch (err) {
+          console.error('Error passing providers to game:', err);
+        }
+      };
+
+      gameFrame.addEventListener('load', passProvidersToGame);
+      passProvidersToGame();
+
+      return () => gameFrame.removeEventListener('load', passProvidersToGame);
+    }
+  }, [address, isConnected]);
 
   return (
     <div style={{ overflow: 'hidden' }}>
@@ -101,6 +130,31 @@ export default function Home() {
         }}>
           {translations[language]}
         </div>
+        
+        {/* Add Connect Wallet button if needed */}
+        {!isConnected && (
+          <button 
+            onClick={() => connect()}
+            style={{
+              background: 'none',
+              border: '1px solid #a0a0a0',
+              color: '#a0a0a0',
+              padding: '0.5rem 1rem',
+              cursor: 'pointer',
+              marginTop: '1rem'
+            }}
+          >
+            Connect Wallet
+          </button>
+        )}
+
+        {/* <iframe
+          id="qpop"
+          src="/games/ape-game/index.html"
+          style={{ width: '100%', height: '600px', border: 'none' }}
+          allow="web3"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-modals"
+        /> */}
         
         {/* Social Links */}
         <div style={{
