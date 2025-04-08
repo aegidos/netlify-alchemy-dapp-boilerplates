@@ -216,7 +216,7 @@ export default function Home() {
           padding: '2rem 0',
           width: '100%'
         }}>
-          <a href="https://studio.opensea.io/collection/apes-in-space-on-ape/" 
+          <a href="https://opensea.io/collection/apes-in-space-on-ape" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
