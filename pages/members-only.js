@@ -649,7 +649,7 @@ export default function MembersOnly() {
           borderTop: '1px solid #333',
           marginTop: '2rem'
         }}>
-          <a href="https://opensea.io/collection/apechain-pow-nft" 
+          <a href="https://studio.opensea.io/collection/apes-in-space-on-ape/" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
