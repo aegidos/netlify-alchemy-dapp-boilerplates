@@ -106,6 +106,8 @@ export default function MembersOnly() {
   const [mintStatus, setMintStatus] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
   const [highscores, setHighscores] = useState([]);
+  const [isVerifying, setIsVerifying] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -126,6 +128,39 @@ export default function MembersOnly() {
     window.addEventListener('requestMint', handleMintRequest);
     return () => window.removeEventListener('requestMint', handleMintRequest);
   }, []);
+
+  useEffect(() => {
+    async function verifyAccess() {
+      if (!isConnected || !address) {
+        router.push('/');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/verify-access', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address })
+        });
+
+        const data = await response.json();
+        
+        if (!data.hasAccess) {
+          router.push('/');
+          return;
+        }
+
+        setHasAccess(true);
+      } catch (error) {
+        console.error('Access verification failed:', error);
+        router.push('/');
+      } finally {
+        setIsVerifying(false);
+      }
+    }
+
+    verifyAccess();
+  }, [address, isConnected]);
 
   const fetchNFTs = async () => {
     if (!address) return;
@@ -348,7 +383,8 @@ export default function MembersOnly() {
     }
   };
 
-  if (!isClient) return null;
+  if (!isClient || isVerifying) return null;
+  if (!hasAccess) return null;
 
   return (
     <div className={styles.container}>
@@ -609,4 +645,22 @@ export default function MembersOnly() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  // Check for authentication headers
+  const { req } = context;
+  
+  if (!req.headers.referer?.includes(process.env.NEXT_PUBLIC_APP_URL)) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
