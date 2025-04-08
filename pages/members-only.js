@@ -66,6 +66,36 @@ const ABI2 = [
 }
 ];
 
+const tableStyles = {
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    marginTop: '2rem',
+    backgroundColor: '#1a1a1a',
+    borderRadius: '8px',
+    overflow: 'hidden'
+  },
+  th: {
+    padding: '1rem',
+    backgroundColor: '#2a2a2a',
+    color: '#f0f0f0',
+    textAlign: 'center',
+    borderBottom: '2px solid #333'
+  },
+  td: {
+    padding: '1rem',
+    textAlign: 'center',
+    borderBottom: '1px solid #333',
+    color: '#f0f0f0'
+  },
+  img: {
+    width: '100px',
+    height: '100px',
+    borderRadius: '8px',
+    border: '2px solid #444'
+  }
+};
+
 export default function MembersOnly() {
   const { isConnected, address } = useAccount();
   const router = useRouter();
@@ -75,6 +105,7 @@ export default function MembersOnly() {
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [highscores, setHighscores] = useState([]);
 
   useEffect(() => {
     setIsClient(true);
@@ -175,6 +206,25 @@ export default function MembersOnly() {
   useEffect(() => {
     fetchNFTs();
   }, [address]);
+
+  const fetchHighscores = async () => {
+    try {
+      const response = await fetch('/api/scores');
+      if (!response.ok) {
+        throw new Error('Failed to fetch highscores');
+      }
+      const scores = await response.json();
+      setHighscores(scores);
+    } catch (error) {
+      console.error('Error fetching highscores:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHighscores();
+    const interval = setInterval(fetchHighscores, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleNFTSelect = (index, value) => {
     const newSelection = [...selectedNFTs];
@@ -360,26 +410,202 @@ export default function MembersOnly() {
         alignItems: 'center',
         minHeight: '100vh'
       }}>
-        <h1>Members Only Content</h1>
-        <p>Current Wallet: {address || 'Not connected'}</p>
+        <h2 style={{ color: '#f0f0f0', marginBottom: '2rem' }}>🧪 Elixir Recipes</h2>
+        <table style={tableStyles.table}>
+          <thead>
+            <tr>
+              <th style={tableStyles.th}>Elixir Name</th>
+              <th style={tableStyles.th}>Result</th>
+              <th style={tableStyles.th}>Ingredient 1</th>
+              <th style={tableStyles.th}>Ingredient 2</th>
+              <th style={tableStyles.th}>Ingredient 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={tableStyles.td}>Magic Mana & Cure</td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmcfNkNoamAeFqWhkhbSYsYNaRGt7qUNgiuWfN644NEcY7`} 
+                  alt="Magic Mana & Cure"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmSG6xPaEpBvFAeGUizVpu1q3CmFEa3aFLbZXWLC3g4zLN`} 
+                  alt="Ingredient 1"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf`} 
+                  alt="Ingredient 2"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>-</td>
+            </tr>
+            <tr>
+              <td style={tableStyles.td}>Mana</td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmYbL9PWdHBuQicsJck93sLFbVicL5exvEPEC6vRFzLsDx`} 
+                  alt="Mana"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmfVtANDxR6gdXxhNycjdm75UTKtzsX2ckMuhzLodfz1nv`} 
+                  alt="Ingredient 1"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmNtKGGGTvKjw4zbKKUFgoPLcVSPAfNSfy5HCYn5uQyCa8`} 
+                  alt="Ingredient 2"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>-</td>
+            </tr>
+            <tr>
+              <td style={tableStyles.td}>Cure 25</td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmWUKkQ53ndEBsULZTQkkMKTuMnNCSnvVFk57hP79rfAWC`} 
+                  alt="Cure 25"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/Qmb5k8VwMTkNBCpd4Nng99euurm8TV3Qq2U9X8K7WG7rbW`} 
+                  alt="Ingredient 1"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf`} 
+                  alt="Ingredient 2"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>-</td>
+            </tr>
+            <tr>
+              <td style={tableStyles.td}>Cure 50</td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmXZR6F73rWZNXEWnNQLYy8aCsyULoHFnwvbGs89Ni454t`} 
+                  alt="Cure 50"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmbULkPpdqvVYowpHrQ2Mk6unCgdygLJ13Wx9aqZhwDwWo`} 
+                  alt="Ingredient 1"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmNtKGGGTvKjw4zbKKUFgoPLcVSPAfNSfy5HCYn5uQyCa8`} 
+                  alt="Ingredient 2"
+                  style={tableStyles.img}
+                />
+              </td>
+              <td style={tableStyles.td}>
+                <img 
+                  src={`https://ipfs.io/ipfs/QmUaa5YB7aQ7Hmj8cdVQjtknNUpY4CHVbCoghMofMTDNcf`} 
+                  alt="Ingredient 3"
+                  style={tableStyles.img}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <div style={{
-          width: '900px',
+          width: '100%',
           maxWidth: '100%',
-          margin: '0 auto'
+          margin: '2rem auto'
         }}>
           <iframe
             key={address}
             src={`/games/ape-game/index.html?wallet=${address || ''}`}
             style={{
               width: '100%',
-              height: '1800px',
+              height: '600px',
               border: 'none',
-              marginTop: '2rem',
               backgroundColor: '#000'
             }}
             onLoad={() => console.log('iframe loaded with address:', address)}
           />
         </div>
+        <div style={{ padding: '2rem 0' }}>
+          <h2 style={{ color: '#f0f0f0', marginBottom: '2rem' }}>🏆 Top 50 Highscores</h2>
+          <div style={{ 
+            maxWidth: '900px', 
+            margin: '0 auto',
+            backgroundColor: '#1a1a1a',
+            borderRadius: '8px',
+            padding: '1rem'
+          }}>
+            <table style={{ 
+              width: '100%', 
+              borderCollapse: 'collapse', 
+              color: '#a0a0a0'
+            }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #404040' }}>
+                  <th style={{ padding: '12px', textAlign: 'left' }}>Rank</th>
+                  <th style={{ padding: '12px', textAlign: 'left' }}>Wallet</th>
+                  <th style={{ padding: '12px', textAlign: 'right' }}>Score</th>
+                  <th style={{ padding: '12px', textAlign: 'left' }}>Species</th>
+                  <th style={{ padding: '12px', textAlign: 'center' }}>Turn</th>
+                </tr>
+              </thead>
+              <tbody>
+                {highscores.length > 0 ? (
+                  highscores.map((score, index) => {
+                    const shortWallet = score.walletaddress ? 
+                      `${score.walletaddress.slice(0, 6)}...${score.walletaddress.slice(-4)}` : 
+                      'unknown';
+
+                    return (
+                      <tr 
+                        key={index}
+                        style={{ 
+                          borderBottom: '1px solid #303030',
+                          backgroundColor: score.walletaddress === address ? '#2a2a2a' : 'transparent'
+                        }}
+                      >
+                        <td style={{ padding: '12px' }}>{index + 1}</td>
+                        <td style={{ padding: '12px' }}>{shortWallet}</td>
+                        <td style={{ padding: '12px', textAlign: 'right' }}>{score.score || 0}</td>
+                        <td style={{ padding: '12px' }}>{score.species || 'Unknown'}</td>
+                        <td style={{ padding: '12px', textAlign: 'center' }}>{score.turn || '?'}</td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={5} style={{ padding: '12px', textAlign: 'center' }}>
+                      No scores yet
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        
       </div>
     </div>
   );

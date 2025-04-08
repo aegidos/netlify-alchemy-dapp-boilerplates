@@ -18,99 +18,15 @@ input {
 
 <br><br>
 
-<div id="highscores" style="margin: 20px; padding: 10px; width: 800px;">
-    <h2 style="color: #a0a0a0;">Top 50 Highscores</h2>
-    <table style="width: 100%; border-collapse: collapse; color: #a0a0a0;">
-        <thead>
-            <tr style="border-bottom: 2px solid #404040;">
-                <th style="padding: 8px; text-align: left;">Rank</th>
-                <th style="padding: 8px; text-align: left;">Wallet</th>
-                <th style="padding: 8px; text-align: right;">Score</th>
-                <th style="padding: 8px; text-align: left;">Species</th>
-                <th style="padding: 8px; text-align: center;">Turn</th>
-            </tr>
-        </thead>
-        <tbody id="highscoreTable">
-            <!-- Highscores will be populated here -->
-        </tbody>
-    </table>
-</div>
-
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Get wallet address from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const walletAddress = urlParams.get('wallet');
     
-    // Initialize global game configuration object
     window.gameConfig = {
       walletAddress: walletAddress || 'unknown'
     };
   });
-
-function updateHighscores() {
-    fetch('/api/scores')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(scores => {
-            const tableBody = document.getElementById('highscoreTable');
-            if (!tableBody) return;
-            
-            tableBody.innerHTML = '';
-            
-            if (!Array.isArray(scores) || scores.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" style="padding: 8px; text-align: center;">No scores yet</td></tr>';
-                return;
-            }
-            
-            scores.forEach((score, index) => {
-                try {
-                    const row = document.createElement('tr');
-                    row.style.borderBottom = '1px solid #303030';
-                    
-                    // Add debug logging
-                    // console.log('Processing score:', {
-                    //     rawWallet: score.walletaddress, // Changed from walletAddress to walletaddress
-                    //     score: score.score,
-                    //     species: score.species
-                    // });
-                    
-                    // Check if walletaddress exists and is a string
-                    const shortWallet = (score.walletaddress && typeof score.walletaddress === 'string') ? 
-                        `${score.walletaddress.slice(0, 6)}...${score.walletaddress.slice(-4)}` : 
-                        'unknown';
-                    
-                    row.innerHTML = `
-                        <td style="padding: 8px;">${index + 1}</td>
-                        <td style="padding: 8px;">${shortWallet}</td>
-                        <td style="padding: 8px; text-align: right;">${score.score || 0}</td>
-                        <td style="padding: 8px;">${score.species || 'Unknown'}</td>
-                        <td style="padding: 8px; text-align: center;">${score.turn || '?'}</td>
-                    `;
-                    tableBody.appendChild(row);
-                } catch (err) {
-                    console.error('Error processing score:', err, score);
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error loading highscores:', error);
-            const tableBody = document.getElementById('highscoreTable');
-            if (tableBody) {
-                tableBody.innerHTML = '<tr><td colspan="5" style="padding: 8px; text-align: center;">Failed to load highscores</td></tr>';
-            }
-        });
-}
-
-// Call updateHighscores immediately and set up interval
-document.addEventListener('DOMContentLoaded', () => {
-    updateHighscores();
-    setInterval(updateHighscores, 60000);
-});
 </script>
 
 <a href="manual/manual_en.html">Manual</a><br>
