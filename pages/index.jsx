@@ -5,51 +5,103 @@ import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 
 const translations = {
-  de: (
-    <>
-      🦍 Planet der Ape Gang – Überleben, Entwickeln, Erobern! 🌍🚀
-      <p>Yo Gang, macht euch bereit – das ist der **Planet der Ape Gang**! 🦍🔥</p> 
-      <p>Gestrandet auf einem wilden Planeten muss die **Ape Gang** ums Überleben kämpfen – gegen gnadenlose Alien-Spezies und unaufhaltsame Naturkatastrophen wie Meteoriteneinschläge, Vulkanausbrüche und gewaltige Überschwemmungen. 💥🌋🌊</p>
-       <p>Die **Ape Gang Apes** müssen sich durchschlagen: 
-        <li>🍌 **Nahrung sammeln**, um zu überleben </li>
-        <li>💪 **Sich Runde für Runde trainieren und weiterentwickeln** </li>
-        <li>🗺️ **Den Planeten erkunden**, um Geheimnisse zu lüften </li>
-        <li>⚔️ **Feinde bekämpfen**, um ihr Territorium zu verteidigen </li>
-        <li> 🧬 **Sich fortpflanzen**, um die nächste Generation zu sichern</li>
-        </p> 
-        <p>Nur die Stärksten passen sich an und führen die Ape Gang zur Dominanz! Ein rundenbasiertes Multiplayer-Game, in dem Strategie und Skill entscheiden, wer überlebt und wer untergeht. 🏆🔥</p> <p>🐵 **Planet der Ape Gang – Macht euch bereit für den ultimativen Kampf!** 🚀🔥</p>
-    </>
-  ),
   en: (
     <>
-    🦍 Planet of the Ape Gang – Survive, Evolve, Conquer! 🌍🚀
-<p>Yo Gang, get ready – this is the **Planet of the Ape Gang**! 🦍🔥</p> 
-<p>Stranded on an untamed planet, the **Ape Gang** must fight to survive against 
-  ruthless alien species and unstoppable natural disasters like meteor strikes, v
-  olcanic eruptions, and massive floods. 💥🌋🌊</p> 
-  <p>**Ape Gang Apes** need to hustle: 
-  <li>🍌 **Gather food** to stay strong</li> 
-  <li>💪 **Train and evolve** round by round</li>
-  <li>🗺️ **Explore new territories** to uncover secrets</li>
-  <li>⚔️ **Battle enemies** to defend their kind</li> 
-  <li>🧬 **Reproduce and grow the tribe** for the future</li></p> <p>Survival is the name of the game – only the strongest will adapt and lead the Ape Gang to dominance! A round-based multiplayer experience where strategy and skill determine who thrives and who falls. 🏆🔥</p> <p>🐵 **Planet of the Ape Gang – Get Ready for the Ultimate Battle!** 🚀🔥</p>
-This keeps the hype and energy of the original but aligns it with your new game concept! Let me know if you want any tweaks. 🚀
+      <h1>Apes in Space</h1>
+      <p>Have you ever asked yourself how all the apes came to our space? Legend has it they arrived aboard a massive, interstellar vessel—an enterprise-sized shuttle—crashing through the atmosphere and landing on a wild, untamed planet. From that moment on, they were no longer just passengers. They became survivors. Competitors. Explorers.</p>
+      <p>Forced to contend with the planet's volatile environment and rival species, the apes began adapting rapidly. Driven by the need to endure, evolve, and thrive, they entered a relentless cycle of survival and conquest.</p>
 
+      <h2>The Game: Survival in Rounds</h2>
+      <p>Apes in Space is a round-based multiplayer game that fuses strategy, skill, and a touch of cosmic luck. In each round, players must:</p>
+      <ul>
+        <li>🌿 Gather rare resources to maintain strength and vitality</li>
+        <li>⚔️ Defend against threats—alien creatures, cataclysmic events, and other ape factions</li>
+        <li>🚀 Explore new biomes, uncovering secrets and unlocking power-ups</li>
+        <li>💪 Evolve, enhancing abilities and expanding the ape tribe</li>
+      </ul>
+      <p>Only the most strategic and resilient players will advance through the escalating rounds of intensity.</p>
 
+      <h2>Fuel Your Journey with Rare Plants</h2>
+      <p>To survive and grow stronger, apes must consume energy-rich, native flora unique to the alien world. These include:</p>
+      <ul>
+        <li>🍄 Hushrooms (Max 150)</li>
+        <li>🌿 Firegrass (Max 600)</li>
+        <li>💩 Stinkballs (Max 1000)</li>
+        <li>🍃 Blueleafs (Max 1000)</li>
+        <li>🌱 Snakeroots (Max 1300)</li>
+        <li>🔴 Rangones (Max 800)</li>
+      </ul>
+      <p>Each plant type varies in availability and energy value. Collecting and managing these resources is key to long-term survival and progression.</p>
 
+      <h2>Play to Earn: Free NFTs</h2>
+      <p>Progress unlocks rewards. Players receive free NFTs as they advance through specific rounds of the game.</p>
+      <p>Earn 1 NFT upon reaching the Ranking after each round 1, 2, 3, 4, ... and beyond (up to 12 free mints).</p>
 
+      <h2>Brew Elixirs</h2>
+      <p>The planet's native plants are more than just food—they hold mystical properties.</p>
+      <p>Players will be able to harvest and store these plants in their inventory for a powerful upcoming feature:</p>
+      <p>🌟 Brew Elixir – a contract-based function that allows players to burn 2 or 3 plant NFTs in exchange for a powerful elixir NFT.</p>
+      <p>Four distinct elixir types are available:</p>
+      <ul>
+        <li>🧪 Magic Mana & Cure Elixir</li>
+        <li>🔷 Mana</li>
+        <li>💚 Cure 25%</li>
+        <li>💜 Cure 50%</li>
+      </ul>
+      <p>These elixirs will grant strategic advantages in upcoming game modes and possibly unlock exclusive in-game content.</p>
+    </>
+  ),
+  de: (
+    <>
+      <h1>Affen im Weltraum</h1>
+      <p>Haben Sie sich jemals gefragt, wie all die Affen in unseren Weltraum kamen? Die Legende besagt, dass sie an Bord eines riesigen, interstellaren Schiffes ankamen - eines Shuttles in Enterprise-Größe - das durch die Atmosphäre krachte und auf einem wilden, ungezähmten Planeten landete. Von diesem Moment an waren sie nicht mehr nur Passagiere. Sie wurden zu Überlebenden. Zu Wettkämpfern. Zu Entdeckern.</p>
+      <p>Gezwungen, sich mit der instabilen Umgebung des Planeten und rivalisierenden Arten auseinanderzusetzen, begannen die Affen, sich schnell anzupassen. Getrieben von der Notwendigkeit zu überleben, sich weiterzuentwickeln und zu gedeihen, traten sie in einen unerbittlichen Zyklus des Überlebens und der Eroberung ein.</p>
 
+      <h2>Das Spiel: Überleben in Runden</h2>
+      <p>Apes in Space ist ein rundenbasiertes Multiplayer-Spiel, das Strategie, Geschicklichkeit und einen Hauch kosmischen Glücks vereint. In jeder Runde müssen die Spieler:</p>
+      <ul>
+        <li>🌿 Seltene Ressourcen sammeln, um Kraft und Vitalität zu erhalten</li>
+        <li>⚔️ Sich gegen Bedrohungen verteidigen - außerirdische Kreaturen, katastrophale Ereignisse und andere Affenfraktionen</li>
+        <li>🚀 Neue Biome erkunden, Geheimnisse aufdecken und Power-ups freischalten</li>
+        <li>💪 Sich weiterentwickeln, Fähigkeiten verbessern und den Affenstamm erweitern</li>
+      </ul>
+      <p>Nur die strategischsten und widerstandsfähigsten Spieler werden durch die sich steigernden Runden der Intensität vorankommen.</p>
 
+      <h2>Treibstoff für deine Reise mit seltenen Pflanzen</h2>
+      <p>Um zu überleben und stärker zu werden, müssen Affen energiereiche, einheimische Flora konsumieren, die einzigartig für die außerirdische Welt ist. Dazu gehören:</p>
+      <ul>
+        <li>🍄 Hushrooms (Max 150)</li>
+        <li>🌿 Feuergras (Max 600)</li>
+        <li>💩 Stinkbälle (Max 1000)</li>
+        <li>🍃 Blaublätter (Max 1000)</li>
+        <li>🌱 Schlangenwurzeln (Max 1300)</li>
+        <li>🔴 Rangonen (Max 800)</li>
+      </ul>
+      <p>Jede Pflanzenart variiert in Verfügbarkeit und Energiewert. Das Sammeln und Verwalten dieser Ressourcen ist der Schlüssel zum langfristigen Überleben und Fortschritt.</p>
 
+      <h2>Spielen zum Verdienen: Kostenlose NFTs</h2>
+      <p>Fortschritt schaltet Belohnungen frei. Spieler erhalten kostenlose NFTs, wenn sie bestimmte Runden des Spiels erreichen.</p>
+      <p>Verdiene 1 NFT beim Erreichen des Rankings nach jeder Runde 1, 2, 3, 4, ... und darüber hinaus (bis zu 12 kostenlose Prägungen).</p>
 
-
+      <h2>Elixiere brauen</h2>
+      <p>Die einheimischen Pflanzen des Planeten sind mehr als nur Nahrung - sie besitzen mystische Eigenschaften.</p>
+      <p>Spieler können diese Pflanzen ernten und in ihrem Inventar für eine mächtige kommende Funktion aufbewahren:</p>
+      <p>🌟 Elixier brauen – eine vertragsbasierte Funktion, die es Spielern ermöglicht, 2 oder 3 Pflanzen-NFTs gegen ein mächtiges Elixier-NFT einzutauschen.</p>
+      <p>Vier verschiedene Elixiertypen sind verfügbar:</p>
+      <ul>
+        <li>🧪 Magisches Mana & Heilungselixier</li>
+        <li>🔷 Mana</li>
+        <li>💚 Heilung 25%</li>
+        <li>💜 Heilung 50%</li>
+      </ul>
+      <p>Diese Elixiere gewähren strategische Vorteile in kommenden Spielmodi und schalten möglicherweise exklusive Spielinhalte frei.</p>
     </>
   )
 };
 
 export default function Home() {
   const router = useRouter();
-  const [language, setLanguage] = useState('de');
+  const [language, setLanguage] = useState('en'); // Change default to 'en'
   const { address, isConnected } = useAccount();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
