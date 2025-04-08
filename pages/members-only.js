@@ -640,8 +640,63 @@ export default function MembersOnly() {
             </table>
           </div>
         </div>
-
-        
+        <div style={{
+          display: 'flex',
+          gap: '2rem',
+          justifyContent: 'center',
+          padding: '2rem 0',
+          width: '100%',
+          borderTop: '1px solid #333',
+          marginTop: '2rem'
+        }}>
+          <a href="https://opensea.io/collection/apechain-pow-nft" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
+             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
+             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
+          >
+            <img src="/images/opensea.svg" alt="OpenSea" width="40" height="40" />
+          </a>
+          <a href="https://magiceden.io/collections/apechain/0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style={{ 
+               opacity: 0.7, 
+               transition: 'opacity 0.2s',
+               textDecoration: 'none',
+               color: '#a0a0a0',
+               fontSize: '24px',
+               fontFamily: 'monospace',
+               fontWeight: 'bold',
+               display: 'flex',
+               alignItems: 'center',
+               height: '40px'
+             }}
+             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
+             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
+          >
+            M∑
+          </a>
+          <a href="https://x.com/aegidos" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
+             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
+             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
+          >
+            <img src="/images/x-logo.svg" alt="X (Twitter)" width="40" height="40" />
+          </a>
+          <a href="https://www.threads.net/andischmid1210" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
+             onMouseOver={(e) => e.currentTarget.style.opacity = 1}
+             onMouseOut={(e) => e.currentTarget.style.opacity = 0.7}
+          >
+            <img src="/images/threads.svg" alt="Threads" width="40" height="40" />
+          </a>
+        </div>
       </div>
     </div>
   );

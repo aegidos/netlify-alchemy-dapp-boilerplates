@@ -216,7 +216,7 @@ export default function Home() {
           padding: '2rem 0',
           width: '100%'
         }}>
-          <a href="https://opensea.io/collection/apegang-ape" 
+          <a href="https://opensea.io/collection/apechain-pow-nft" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
@@ -225,7 +225,7 @@ export default function Home() {
           >
             <img src="/images/opensea.svg" alt="OpenSea" width="40" height="40" />
           </a>
-          <a href="https://magiceden.io/collections/apechain/0xf36f4fadef899e839461eccb8d0ce3d49cff5a90" 
+          <a href="https://magiceden.io/collections/apechain/0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ 
