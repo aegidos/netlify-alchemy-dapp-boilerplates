@@ -107,6 +107,25 @@ export default function Home() {
     connector: new InjectedConnector(),
   });
 
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleConnect = async () => {
+    try {
+      // Clear any existing connections
+      localStorage.removeItem('wagmi.store');
+      localStorage.removeItem('wagmi.connected');
+      localStorage.removeItem('wagmi.cache');
+      
+      await connect();
+    } catch (error) {
+      console.error('Connection error:', error);
+    }
+  };
+
   useEffect(() => {
     const gameFrame = document.getElementById('qpop');
     if (gameFrame && gameFrame.contentWindow) {
@@ -184,9 +203,9 @@ export default function Home() {
         </div>
         
         {/* Add Connect Wallet button if needed */}
-        {!isConnected && (
+        {!isConnected && isClient && (
           <button 
-            onClick={() => connect()}
+            onClick={handleConnect}
             style={{
               background: 'none',
               border: '1px solid #a0a0a0',

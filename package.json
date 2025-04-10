@@ -13,6 +13,7 @@
 		"@openzeppelin/contracts": "^5.2.0",
 		"@rainbow-me/rainbowkit": "^0.12.4",
 		"@supabase/supabase-js": "^2.49.3",
+		"@tanstack/react-query": "^5.72.2",
 		"alchemy-sdk": "^2.6.2",
 		"axios": "^1.8.3",
 		"next": "13.1.2",

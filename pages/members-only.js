@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork, useDisconnect } from 'wagmi';
 import { useRouter } from 'next/router';
 import styles from '../styles/BurnNFTs.module.css';
 import axios from 'axios';
@@ -97,9 +97,13 @@ const tableStyles = {
 };
 
 export default function MembersOnly() {
-  const { isConnected, address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { disconnect } = useDisconnect();
   const router = useRouter();
+  
   const [isClient, setIsClient] = useState(false);
+  const [isWalletReady, setIsWalletReady] = useState(false);
   const [selectedNFTs, setSelectedNFTs] = useState([null, null, null]);
   const [userNFTs, setUserNFTs] = useState([]);
   const [isMinting, setIsMinting] = useState(false);
@@ -108,16 +112,75 @@ export default function MembersOnly() {
   const [highscores, setHighscores] = useState([]);
   const [isVerifying, setIsVerifying] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [shouldReload, setShouldReload] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (isClient && !isConnected) {
-      router.push('/');
-    }
-  }, [isConnected, isClient, router]);
+    if (!isConnected || !address) return;
+
+    const setupWallet = async () => {
+      try {
+        if (window.ethereum?.removeAllListeners) {
+          window.ethereum.removeAllListeners();
+        }
+
+        const accounts = await window.ethereum?.request({
+          method: 'eth_accounts'
+        });
+
+        if (accounts?.length) {
+          setIsWalletReady(true);
+        }
+      } catch (error) {
+        console.error('Wallet setup error:', error);
+      }
+    };
+
+    setupWallet();
+  }, [isConnected, address]);
+
+  useEffect(() => {
+    const verifyAccess = async () => {
+      if (!isClient || !isConnected || !address) return;
+
+      try {
+        const lastWalletAddress = sessionStorage.getItem('lastWalletAddress');
+        
+        if (lastWalletAddress === address) {
+          setHasAccess(true);
+          setIsVerifying(false);
+          return;
+        }
+
+        const response = await fetch('/api/verify-access', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address })
+        });
+
+        const data = await response.json();
+        
+        if (data.hasAccess) {
+          setHasAccess(true);
+          sessionStorage.setItem('lastWalletAddress', address);
+        } else {
+          router.replace('/');
+        }
+      } catch (error) {
+        console.error('Access verification failed:', error);
+        router.replace('/');
+      } finally {
+        setIsVerifying(false);
+      }
+    };
+
+    verifyAccess();
+  }, [isClient, isConnected, address]);
 
   useEffect(() => {
     const handleMintRequest = (event) => {
@@ -130,36 +193,70 @@ export default function MembersOnly() {
   }, []);
 
   useEffect(() => {
-    async function verifyAccess() {
-      if (!isConnected || !address) {
-        router.push('/');
-        return;
-      }
+    console.log('Members page mounted');
+    
+    const handleRouteChange = (url) => {
+      console.log('Route changing to:', url);
+    };
 
-      try {
-        const response = await fetch('/api/verify-access', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address })
-        });
+    const handleRouteComplete = (url) => {
+      console.log('Route change completed:', url);
+    };
 
-        const data = await response.json();
-        
-        if (!data.hasAccess) {
-          router.push('/');
-          return;
-        }
+    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteComplete);
 
-        setHasAccess(true);
-      } catch (error) {
-        console.error('Access verification failed:', error);
-        router.push('/');
-      } finally {
-        setIsVerifying(false);
-      }
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteComplete);
+    };
+  }, []);
+
+  const checkWalletConnection = async () => {
+    if (!isConnected || !address) {
+      router.replace('/');
+      return;
     }
 
-    verifyAccess();
+    try {
+      if (window.ethereum?.removeAllListeners) {
+        window.ethereum.removeAllListeners();
+      }
+
+      const accounts = await window.ethereum?.request({
+        method: 'eth_accounts'
+      });
+
+      if (accounts?.length) {
+        setIsWalletReady(true);
+      } else {
+        router.replace('/');
+      }
+    } catch (error) {
+      console.error('Wallet connection error:', error);
+      router.replace('/');
+    }
+  };
+
+  useEffect(() => {
+    const disconnectHandler = () => {
+      console.log('Wallet disconnected');
+      router.replace('/');
+    };
+
+    if (window.ethereum) {
+      window.ethereum.on('disconnect', disconnectHandler);
+      window.ethereum.on('accountsChanged', checkWalletConnection);
+      window.ethereum.on('chainChanged', checkWalletConnection);
+    }
+
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener('disconnect', disconnectHandler);
+        window.ethereum.removeListener('accountsChanged', checkWalletConnection);
+        window.ethereum.removeListener('chainChanged', checkWalletConnection);
+      }
+    };
   }, [address, isConnected]);
 
   const fetchNFTs = async () => {
@@ -178,29 +275,24 @@ export default function MembersOnly() {
         },
       });
 
-      console.log('Raw NFT data:', response.data.ownedNfts[0]); // Log for debugging
+      console.log('Raw NFT data:', response.data.ownedNfts[0]);
 
       const nfts = response.data.ownedNfts.map((nft) => {
-        // Get the metadata or default to empty object
         const metadata = nft.metadata || {};
         let nftType = 'Unknown';
         let displayName = `NFT #${parseInt(nft.id.tokenId, 16)}`;
         
-        // Check if metadata has what we need
         if (metadata) {
-          // Get the display name from metadata if available
           if (metadata.name) {
             displayName = metadata.name;
           }
           
-          // Try to get type from attributes array
           if (metadata.attributes && Array.isArray(metadata.attributes)) {
             const typeAttribute = metadata.attributes.find(
               attr => attr.trait_type === "Type"
             );
             
             if (typeAttribute && typeAttribute.value) {
-              // Map from attribute value to friendly name
               const typeCode = typeAttribute.value;
               if (typeCode === "APNG") nftType = "HUSHROOMS";
               else if (typeCode === "BPNG") nftType = "FIREGRASSBUSH";
@@ -212,12 +304,11 @@ export default function MembersOnly() {
               else if (typeCode === "HPNG") nftType = "MANA";
               else if (typeCode === "IPNG") nftType = "Cure 25";
               else if (typeCode === "JPNG") nftType = "Cure 50";
-              else nftType = typeCode; // Use the attribute value directly if no mapping
+              else nftType = typeCode;
             }
           }
         }
         
-        // If we couldn't get the type from attributes, fall back to the previous method
         if (nftType === 'Unknown') {
           nftType = NFT_TYPES[parseInt(nft.id.tokenId, 16) % 6] || 'Unknown';
         }
@@ -227,7 +318,7 @@ export default function MembersOnly() {
           type: nftType,
           title: displayName,
           image: metadata.image || null,
-          rawMetadata: metadata // Include full metadata for debugging
+          rawMetadata: metadata
         };
       });
 
@@ -263,7 +354,6 @@ export default function MembersOnly() {
 
   const handleNFTSelect = (index, value) => {
     const newSelection = [...selectedNFTs];
-    // Find the actual NFT object instead of just storing the ID
     newSelection[index] = value ? userNFTs.find(nft => nft.tokenId === value) : null;
     setSelectedNFTs(newSelection);
   };
@@ -286,7 +376,6 @@ export default function MembersOnly() {
         body: JSON.stringify({ tokenIds }),
       });
 
-      // Check if response is ok before trying to parse JSON
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API error (${response.status}): ${errorText}`);
@@ -303,7 +392,6 @@ export default function MembersOnly() {
       if (data.success) {
         console.log('Burn successful:', data.txHash);
         setStatusMessage('NFTs burned successfully! 🎉');
-        // Refresh NFTs after successful burn
         setTimeout(fetchNFTs, 2000);
       } else if (data.contractAddress) {
         setStatusMessage('Please confirm transaction in your wallet...');
@@ -311,14 +399,12 @@ export default function MembersOnly() {
         try {
           await window.ethereum.request({ method: 'eth_requestAccounts' });
           
-          // Create wallet client with account
           const walletClient = createWalletClient({
             account: address,
             chain: apeChain,
             transport: custom(window.ethereum)
           });
 
-          // Execute burnAndMint using viem
           const txHash = await walletClient.writeContract({
             address: CONTRACT_ADDRESS,
             abi: ABI2,
@@ -347,16 +433,27 @@ export default function MembersOnly() {
   const mintNFT = async () => {
     if (!address) return;
     
-    setIsMinting(true);
-    setMintStatus('Initiating minting process...');
-    
     try {
-      // Request account access first
+      const response = await fetch('/api/check-mint-count', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address })
+      });
+
+      const data = await response.json();
+      
+      if (data.count >= 12) {
+        setShowModal(true);
+        return;
+      }
+
+      setIsMinting(true);
+      setMintStatus('Initiating minting process...');
+      
       await window.ethereum.request({ method: 'eth_requestAccounts' });
       
-      // Create wallet client with account
       const walletClient = createWalletClient({
-        account: address,  // Add the account
+        account: address,
         chain: apeChain,
         transport: custom(window.ethereum)
       });
@@ -383,7 +480,7 @@ export default function MembersOnly() {
     }
   };
 
-  if (!isClient || isVerifying) return null;
+  if (!isClient || isVerifying || !isWalletReady) return null;
   if (!hasAccess) return null;
 
   return (
@@ -427,7 +524,6 @@ export default function MembersOnly() {
         )}
       </div>
 
-      {/* Hidden mint button for game interaction */}
       <button 
         onClick={mintNFT}
         disabled={isMinting}
@@ -436,6 +532,49 @@ export default function MembersOnly() {
       >
         Mint NFT
       </button>
+
+      {showModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: '#1a1a1a',
+            padding: '2rem',
+            borderRadius: '8px',
+            maxWidth: '400px',
+            textAlign: 'center',
+            border: '1px solid #333'
+          }}>
+            <h3 style={{ color: '#f0f0f0', marginBottom: '1rem' }}>Maximum Mints Reached</h3>
+            <p style={{ color: '#a0a0a0', marginBottom: '1.5rem' }}>
+              You have reached the maximum number of mints (12). 
+              Try brewing elixirs from your existing botanicals!
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                background: 'none',
+                border: '1px solid #a0a0a0',
+                color: '#a0a0a0',
+                padding: '0.5rem 1rem',
+                cursor: 'pointer',
+                borderRadius: '4px'
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       <div style={{ 
         padding: '2rem', 
@@ -580,7 +719,10 @@ export default function MembersOnly() {
               border: 'none',
               backgroundColor: '#000'
             }}
-            onLoad={() => console.log('iframe loaded with address:', address)}
+            onLoad={() => {
+              console.log('iframe loaded with address:', address);
+              setIframeLoaded(true);
+            }}
           />
         </div>
         <div style={{ padding: '2rem 0' }}>
@@ -703,7 +845,6 @@ export default function MembersOnly() {
 }
 
 export async function getServerSideProps(context) {
-  // Check for authentication headers
   const { req } = context;
   
   if (!req.headers.referer?.includes(process.env.NEXT_PUBLIC_APP_URL)) {

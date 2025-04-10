@@ -1,7 +1,17 @@
 import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, useAccount, WagmiConfig } from "wagmi";
+import { 
+  configureChains, 
+  createClient,
+  WagmiConfig,
+  useAccount, 
+  useDisconnect,
+  useNetwork,
+  usePublicClient,
+  useWalletClient
+} from "wagmi";
 import {
   mainnet,
  
@@ -14,6 +24,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { createContext, useContext } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // ApeChain Configuration
 const apeChain = {
@@ -58,17 +69,23 @@ const { connectors } = getDefaultWallets({
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
-  provider,
+  provider
 });
 
 export { WagmiConfig, RainbowKitProvider };
 
 export const WalletContext = createContext();
 
-function MyApp({ Component, pageProps }) {
+const queryClient = new QueryClient();
+
+// Create a new component to handle wallet logic
+function WalletWrapper({ children }) {
   const router = useRouter();
   const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasCheckedNFT, setHasCheckedNFT] = useState(false);
 
   // Make wallet address available globally
   useEffect(() => {
@@ -78,81 +95,126 @@ function MyApp({ Component, pageProps }) {
     };
   }, [address, isConnected]);
 
-  const walletState = {
-    address: address || '',
-    isConnected
-  };
-
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
     const checkNFTOwnership = async () => {
-      if (isConnected && address) {
-        try {
-          // Define all contract addresses
-          const contractAddresses = [
-            '0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90', // APE GANG
-            '0x60e4d786628fea6478f785a6d7e704777c86a7c6', // MAYC
-            '0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df', // Gs on ape
-            '0xfa1c20e0d4277b1e0b289dffadb5bd92fb8486aa', // NPC
-            '0x91417bd88af5071ccea8d3bf3af410660e356b06',  // zards
-            '0xcf2e5437b2944def3fc72b0a7488e87467c7d76c',  // Froglings
-            '0xa096af26affe37cc2a56ecf381b754a20b6ddf20',  // OVISAURS
-            '0x35b70c728ce7bc2e2593100673a0ccd9ef4e1c7b',  // spunkys
-            '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6'  // Pixl Pals
-          ];
+      if (!isClient || !isConnected || !address || hasCheckedNFT) return;
 
-          // Check each contract
-          for (const contractAddress of contractAddresses) {
-            const response = await axios.get(
-              `https://apechain-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
-            );
+      console.log('Starting NFT check:', {
+        pathname: router.pathname,
+        isConnected,
+        address
+      });
 
-            if (response.data.totalCount > 0) {
-              console.log(`Found NFT in contract: ${contractAddress}`);
-              router.push('/members-only');
-              console.log('Wallet address in members-only:', address);
-              console.log('walletState in members-only:', walletState);
-              return; // Exit after first match
+      try {
+        setIsLoading(true);
+        setHasCheckedNFT(true);
+
+        // Define contract addresses
+        const contractAddresses = [
+          '0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90', // APE GANG
+          '0x60e4d786628fea6478f785a6d7e704777c86a7c6', // MAYC
+          '0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df', // Gs on ape
+          '0xfa1c20e0d4277b1e0b289dffadb5bd92fb8486aa', // NPC
+          '0x91417bd88af5071ccea8d3bf3af410660e356b06',  // zards
+          '0xcf2e5437b2944def3fc72b0a7488e87467c7d76c',  // Froglings
+          '0xa096af26affe37cc2a56ecf381b754a20b6ddf20',  // OVISAURS
+          '0x35b70c728ce7bc2e2593100673a0ccd9ef4e1c7b',  // spunkys
+          '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6',  // Pixl Pals
+          '0x0178a9d0b0cba1b2ede3afdb6dd021db24ff4240'  // Forever Undead
+        ];
+
+        for (const contractAddress of contractAddresses) {
+          const response = await axios.get(
+            `https://apechain-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTs?owner=${address}&contractAddresses[]=${contractAddress}`
+          );
+
+          if (response.data.totalCount > 0) {
+            console.log(`Found NFT in contract: ${contractAddress}`);
+            sessionStorage.setItem('hasValidNFT', 'true');
+            
+            if (router.pathname !== '/members-only') {
+              console.log('NFT found, pushing to members-only');
+              await router.push('/members-only');
+              console.log('Router push completed');
             }
+            return;
           }
-
-          // If we get here, no NFTs were found in any contract
-          if (!router.pathname.includes('/members-only')) {
-            router.push('/');
-          }
-
-        } catch (error) {
-          console.error("Error checking NFT ownership:", error);
         }
+
+        // No NFTs found
+        sessionStorage.removeItem('hasValidNFT');
+        if (router.pathname !== '/') {
+          router.push('/');
+        }
+
+      } catch (error) {
+        console.error("Error checking NFT ownership:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (isClient) {
-      checkNFTOwnership();
-    }
-  }, [address, isConnected, router.pathname, isClient]);
+    checkNFTOwnership();
+  }, [isClient, isConnected, address, router.pathname, hasCheckedNFT]);
 
-  if (!isClient) {
-    return null; // or a loading spinner
-  }
+  // Reset check when disconnecting
+  useEffect(() => {
+    if (!isConnected) {
+      setHasCheckedNFT(false);
+      sessionStorage.removeItem('hasValidNFT');
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (isConnected && window.ethereum) {
+      // Cleanup old listeners
+      window.ethereum.removeAllListeners();
+      
+      // Add single disconnect handler
+      window.ethereum.on('disconnect', () => {
+        console.log('Wallet disconnected');
+        router.replace('/');
+      });
+    }
+
+    return () => {
+      if (window.ethereum?.removeAllListeners) {
+        window.ethereum.removeAllListeners();
+      }
+    };
+  }, [isConnected]);
+
+  if (!isClient) return null;
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider
-        modalSize="compact"
-        initialChain={apeChain}
-        chains={chains}
-      >
-        <WalletContext.Provider value={walletState}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </WalletContext.Provider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WalletContext.Provider value={{ address: address || '', isConnected }}>
+      {children}
+    </WalletContext.Provider>
+  );
+}
+
+// Simplify MyApp component
+function MyApp({ Component, pageProps }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider
+          modalSize="compact"
+          initialChain={apeChain}
+          chains={chains}
+        >
+          <WalletWrapper>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </WalletWrapper>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </QueryClientProvider>
   );
 }
 
