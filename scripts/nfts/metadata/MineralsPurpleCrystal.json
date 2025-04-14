@@ -1,0 +1,15 @@
+{
+  "name": "Purple Crystals",
+  "description": "Purple glowing crystals for manufacturing common weapons",
+  "image": "ipfs://QmYPr4Wy5EXwkKsNzfv9X8YLT7puRx3zQi8iSHB3JuUqc4",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Ressource"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

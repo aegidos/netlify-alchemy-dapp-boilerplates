@@ -1,0 +1,15 @@
+{
+  "name": "Hot Lava",
+  "description": "Lava from the vulcanos of planet ape necessary to create swords and staffs",
+  "image": "ipfs://QmbmjxWDsScgmxcEsYSCKfZge6qLW9odM6koZy6zEg7Dj4",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Ressource"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

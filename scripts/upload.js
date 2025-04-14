@@ -53,7 +53,11 @@ async function uploadToPinata(filePath, metadata) {
       attributes: [
         {
           trait_type: "Type",
-          value: metadata.file.replace(/[_.]/g, '').toUpperCase() // Cleanup filename to just type letter
+          value: metadata.Type
+        },
+        {
+          trait_type: "Rarity",
+          value: metadata.Rarity
         }
       ]
     };
@@ -122,16 +126,18 @@ async function checkIfPinExists(name) {
 
 async function uploadNFTs() {
   const nftData = [
-    { file: "_A.png", name: "Hushrooms", description: "Hushrooms Base NFT Type A" },
-    { file: "_B.png", name: "Firegrassbush", description: "Firegrassbush Base NFT Type B" },
-    { file: "_C.png", name: "Rangones", description: "Rangones Base NFT Type C" },
-    { file: "_D.png", name: "Blueleaf", description: "Blueleaf Base NFT Type D" },
-    { file: "_E.png", name: "Stinkballtrees", description: "Stinkballtrees Base NFT Type E" },
-    { file: "_F.png", name: "Snakeroots", description: "Snakeroots Base NFT Type F" },
-    { file: "G.png", name: "Magic Mana + Cure", description: "Evolved Elixir NFT Type G" },
-    { file: "H.png", name: "Mana", description: "Evolved Elixir NFT Type H" },
-    { file: "I.png", name: "Cure 25", description: "Evolved Elixir NFT Type I" },
-    { file: "J.png", name: "Cure 50", description: "Evolved Elixir NFT Type J" }
+    { file: "MBlueSeaShell.png", name: "Blue Sea Shell", description: "Minerals of the blue sea shell", Type: "Ressource" , Rarity: "Uncommon"},
+    { file: "MineralsAquamarinCrystals.png", name: "Aquamarin Crystals", description: "Glowing aquamarin, blue crystals necessary for forging magical weapons" , Type: "Ressource" , Rarity: "Mystical"},
+    { file: "Minerals_DarkRED.png", name: "Dark Red Crystals", description: "Dark red crystals packed with powerfull dark energy" , Type: "Ressource" , Rarity: "Rare"},
+    { file: "MineralsPurpleCrystal.png", name: "Purple Crystals", description: "Purple glowing crystals for manufacturing common weapons" , Type: "Ressource" , Rarity: "Common"},
+    { file: "MineralsYellowCrystal.png", name: "Yellow Crystals", description: "Yellow crystaline materials, including sulfur from magic swamps for creation of the most powerfull weapons" , Type: "Ressource" , Rarity: "Legendary"},
+    { file: "MLava.png", name: "Hot Lava", description: "Lava from the vulcanos of planet ape necessary to create swords and staffs" , Type: "Ressource" , Rarity: "Uncommon"},
+    { file: "MWoodTree.png", name: "Magic Wood", description: "Wood from a magical tree, harvested to build the basic for a lot of artifacts" , Type: "Ressource" , Rarity: "Common"},
+    { file: "ZAxeGreenYellow(epic).png", name: "Green Axe", description: "A sharp strong and heavy axe" , Type: "Weapon" , Rarity: "Epic"},
+    { file: "ZFlailBlueShellWood(uncommon).png", name: "Curved Hard Flail", description: "The curved hard flail is a strong weapon for battles" , Type: "Weapon", Rarity: "Uncommon"},
+    { file: "ZSwordPurpleWood(common).png", name: "Sword of the Stones", description: "The blade of the sword of the stones is very precise and sharp" , Type: "Weapon", Rarity: "Common"},
+    { file: "ZSwordRedLava(legendary).png", name: "Lava Sword", description: "One of the strongest weapons that can be forged by lava" , Type: "Weapon", Rarity: "Legendary"},
+    { file: "ZWandWoodYellowLava(mystic).png", name: "Necromancer’s Staff", description: "Necromancer’s Staff or Wand of Raising the Undead is a powerfull magical weapon and mystical artifact" , Type: "Artifact", Rarity: "Mystical"},
   ];
 
   const results = [];
@@ -149,7 +155,9 @@ async function uploadNFTs() {
       const uploadResult = await uploadToPinata(filePath, {
         name: nft.name,
         description: nft.description,
-        file: nft.file
+        file: nft.file,
+        Type: nft.Type,
+        Rarity: nft.Rarity
       });
 
       // Save local copy of metadata JSON
@@ -165,10 +173,16 @@ async function uploadNFTs() {
           name: nft.name,
           description: nft.description,
           image: uploadResult.imageUrl,
-          attributes: [{
-            trait_type: "Type",
-            value: nft.file.replace(/[_.]/g, '').toUpperCase()
-          }]
+          attributes: [
+            {
+              trait_type: "Type",
+              value: nft.Type // Use the Type from nftData
+            },
+            {
+              trait_type: "Rarity",
+              value: nft.Rarity // Use the Rarity from nftData
+            }
+          ]
         }, null, 2)
       );
 

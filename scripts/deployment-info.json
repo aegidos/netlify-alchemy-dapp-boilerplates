@@ -1,20 +1,22 @@
 {
-  "contractAddress": "0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d",
-  "chainId": 33139,
+  "contractAddress": "0xb34c74a86b663f303e811217991ac52a467a468d",
+  "chainId": 33111,
   "deployer": "0x53aa577071e848c2789159842051f992dc22bb51",
-  "timestamp": "2025-04-06T13:57:33.877Z",
+  "timestamp": "2025-04-12T11:50:06.167Z",
   "baseURIs": [
-    "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
-    "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",
-    "ipfs://QmcXS6SK3bHyJBJ1R3FC3BUpqewnkFQ2FgyJCbGsEQqER3",
-    "ipfs://QmW46bZWJ4SerBPZsidVuFiC81s44L5Py3jKWcAjyipU4v",
-    "ipfs://QmWJXoKabfQmuw4tfeVbbDgFGh6PxNNhk6Q9HDsiZ55ot6",
-    "ipfs://QmfSNNu6DMMsLyN8AHVZ1QWvP6ZyYwW73qxitJVwQ49CoH"
+    "ipfs://QmYD518XPN92dWfPzFPkCdT2fVJoxJx94KbXuV4ZjUKkBK",
+    "ipfs://QmNTp2296uzNZC8xafnFFGFFXD21TRpPAfiQscAFcWBbAt",
+    "ipfs://QmfDgCg2ez8s8BCvN1G6F3XJVoPWftnzd6r4tVx9j6t1r5",
+    "ipfs://QmcfUtpV2vCZp8Jg5k6FZf3QKcBDqjn1iyG21ZJPZoF2e2",
+    "ipfs://QmeQ7G11hsk9VVQqbGy8pvM2DcSW1BtzWSKwF2fgQ369ea",
+    "ipfs://QmY8fWBjApQqNNCzRwgVdjQ119HvhgefwDELxFdaFHzgkT",
+    "ipfs://QmSLhvs1gg6PaCtwAjgdh2hF7g1wX1JapG1fV1PAeE8fhj"
   ],
   "evolvedURIs": [
-    "ipfs://QmNomcC1BGbe7d25E83HS4mct3dcKHzwZrtAukjaNdmSNE",
-    "ipfs://QmP2hTgNrsEMFp4nw4ruiQQ3Y2V3b1yhQHcyXXHdCcraDC",
-    "ipfs://QmSm9WzoU6GdBTV3ahHursSKN3sqtF4VRp7kQZa4PJjiW5",
-    "ipfs://QmRDDuFwnsz29DchzQUG4WqwkskpcaKZCH5BAJyTtWj74r"
+    "ipfs://Qme9ZXWEZXuRvfwgzBBS5tR4MBYFkspCRiezUoJBRRBb4C",
+    "ipfs://QmPYkanA4wjh2MJBWYVhZxpLmCWc6SRgSpi7yHVu27ZsbN",
+    "ipfs://QmVMkS4jQ4aKzRpta6kAvHuMeWvDJcUPco2ZQvujJJ8hEY",
+    "ipfs://QmT4sSuJ9GfGF6XSUR7vajjsfdjGRZtPBCF9c95zYo32a7",
+    "ipfs://QmZBBf7inbYFiL1je3tEQB7uhkMXSurZZycWYyFkUSJYWv"
   ]
 }

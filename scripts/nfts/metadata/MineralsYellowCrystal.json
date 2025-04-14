@@ -1,0 +1,15 @@
+{
+  "name": "Yellow Crystals",
+  "description": "Yellow crystaline materials, including sulfur from magic swamps for creation of the most powerfull weapons",
+  "image": "ipfs://QmUi1U6ahXXS2FGbXuDMb8BqsHqP1yckLALcQaJkeHABvx",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Ressource"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Legendary"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Curved Hard Flail",
+  "description": "The curved hard flail is a strong weapon for battles",
+  "image": "ipfs://QmUySUoPXyuiVHEcBg6KHR1imyzmr9ixWzqdC9TMMAZMiU",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Weapon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

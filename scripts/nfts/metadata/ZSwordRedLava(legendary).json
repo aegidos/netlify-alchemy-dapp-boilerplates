@@ -1,0 +1,15 @@
+{
+  "name": "Lava Sword",
+  "description": "One of the strongest weapons that can be forged by lava",
+  "image": "ipfs://QmXqjxRzc8WgWDPnosW4iBoWicfBq7ecZ3jvYkvgohqx4n",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Weapon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Legendary"
+    }
+  ]
+}

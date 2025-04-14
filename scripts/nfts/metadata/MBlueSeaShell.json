@@ -1,0 +1,15 @@
+{
+  "name": "Blue Sea Shell",
+  "description": "Minerals of the blue sea shell",
+  "image": "ipfs://QmRzwyfwdhpgPHKXgKBDqXS7KvPzez26aiPNeckicYQj7N",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Ressource"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Uncommon"
+    }
+  ]
+}

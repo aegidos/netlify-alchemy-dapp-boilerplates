@@ -1,0 +1,15 @@
+{
+  "name": "Sword of the Stones",
+  "description": "The blade of the sword of the stones is very precise and sharp",
+  "image": "ipfs://QmRfC7Lnm5PJfP7rLRRQFfyFykCYnjqM84L2YkmXsmxk8P",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Weapon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Common"
+    }
+  ]
+}

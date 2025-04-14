@@ -1,0 +1,15 @@
+{
+  "name": "Necromancer’s Staff",
+  "description": "Necromancer’s Staff or Wand of Raising the Undead is a powerfull magical weapon and mystical artifact",
+  "image": "ipfs://QmS34ZbeYTKzx4GptJprz5CMDUTd6hSvyEaboYeGCVcDqk",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Artifact"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Mystical"
+    }
+  ]
+}

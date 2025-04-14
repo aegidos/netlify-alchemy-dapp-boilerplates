@@ -1,0 +1,15 @@
+{
+  "name": "Green Axe",
+  "description": "A sharp strong and heavy axe",
+  "image": "ipfs://QmawdD4AbpWe7EibxgeAMPNrFDT6G48UYksUStAR7HszM5",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Weapon"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Epic"
+    }
+  ]
+}

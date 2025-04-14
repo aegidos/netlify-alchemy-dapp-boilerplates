@@ -5,20 +5,20 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-
-contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable { // Add Pausable
+contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
     uint256 public tokenCounter;
     uint256 public constant MAX_MINTS_PER_WALLET = 12;
 
-    uint256[6] public NFT_LIMITS = [150, 600, 800, 1000, 1000, 1300];
-    uint256[6] public NFT_MINTED;
+    uint256[7] public NFT_LIMITS = [350, 100, 275, 500, 135, 310, 885];
+    uint256[7] public NFT_MINTED;
 
     mapping(uint256 => uint8) public tokenTypes;
     mapping(address => uint256) public numMinted;
 
-    string[6] public baseNftURIs;
-    string[4] public evolvedNftURIs;
+    string[7] public baseNftURIs;
+    string[5] public evolvedNftURIs;
 
     struct Recipe {
         uint8[] ingredients;
@@ -28,35 +28,49 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable { // Add
 
     Recipe[] public recipes;
 
+    address[] public allowedContracts = [
+        0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90, // APE GANG
+
+        0x224fc0b2Af8f4530eEE986a2fA3F6c6dfe3EC4d9  // Apes in Space Curtis Test NFT
+    ];
+
     event NFTMinted(address indexed miner, uint256 tokenId, uint8 nftType);
     event NFTBurned(uint256[] burnedTokens, uint256 newTokenId, uint8 newType);
     event MintingPaused(address indexed pauser);
     event MintingUnpaused(address indexed unpauser);
 
-    constructor(string[6] memory _baseNftURIs, string[4] memory _evolvedNftURIs)
-        ERC721("ApeChain PoW NFT", "APOW")
+    constructor(string[7] memory _baseNftURIs, string[5] memory _evolvedNftURIs)
+        ERC721("Apes in Space on Ape (Weapons)", "AISAW")
         Ownable(msg.sender)
     {
         baseNftURIs = _baseNftURIs;
         evolvedNftURIs = _evolvedNftURIs;
 
-        // Set up burn recipes G
-        recipes.push(Recipe(new uint8[](2), 6, _evolvedNftURIs[0])); // E + F = G
-        recipes[0].ingredients[0] = 4;
-        recipes[0].ingredients[1] = 5;
-        // H
-        recipes.push(Recipe(new uint8[](2), 7, _evolvedNftURIs[1])); // C + D = H
-        recipes[1].ingredients[0] = 2;
-        recipes[1].ingredients[1] = 3;
-        // I
-        recipes.push(Recipe(new uint8[](2), 8, _evolvedNftURIs[2])); // B + F = I
-        recipes[2].ingredients[0] = 1;
-        recipes[2].ingredients[1] = 5;
-        // J
-        recipes.push(Recipe(new uint8[](3), 9, _evolvedNftURIs[3])); // A + D + F = J
-        recipes[3].ingredients[0] = 0;
-        recipes[3].ingredients[1] = 3;
-        recipes[3].ingredients[2] = 5;
+        // Recipe H (index 7): ingredients 1 & 4 = H
+        recipes.push(Recipe(new uint8[](2), 7, _evolvedNftURIs[0]));
+        recipes[0].ingredients[0] = 1;
+        recipes[0].ingredients[1] = 4;
+
+        // Recipe I (index 8): ingredients 0 & 6 = I
+        recipes.push(Recipe(new uint8[](2), 8, _evolvedNftURIs[1]));
+        recipes[1].ingredients[0] = 0;
+        recipes[1].ingredients[1] = 6;
+
+        // Recipe J (index 9): ingredients 3 & 6 = J
+        recipes.push(Recipe(new uint8[](2), 9, _evolvedNftURIs[2]));
+        recipes[2].ingredients[0] = 3;
+        recipes[2].ingredients[1] = 6;
+
+        // Recipe K (index 10): ingredients 2 & 5 = K
+        recipes.push(Recipe(new uint8[](2), 10, _evolvedNftURIs[3]));
+        recipes[3].ingredients[0] = 2;
+        recipes[3].ingredients[1] = 5;
+
+        // Recipe L (index 11): ingredients 4 & 6 & 5 = L
+        recipes.push(Recipe(new uint8[](3), 11, _evolvedNftURIs[4]));
+        recipes[4].ingredients[0] = 4;
+        recipes[4].ingredients[1] = 6;
+        recipes[4].ingredients[2] = 5;
 
         _setDefaultRoyalty(msg.sender, 500);
     }
@@ -73,11 +87,20 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable { // Add
         emit MintingUnpaused(msg.sender);
     }
 
-    // Add whenNotPaused modifier to mint function
-    function mint(address to) public whenNotPaused {
-        require(numMinted[msg.sender] < MAX_MINTS_PER_WALLET, "Max mints per wallet reached");
+    function isHolder(address _wallet) public view returns (bool) {
+        for (uint i = 0; i < allowedContracts.length; i++) {
+            if (IERC721(allowedContracts[i]).balanceOf(_wallet) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        uint256 randomType = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, tokenCounter))) % 6;
+    function mint(address to) public whenNotPaused {
+        // require(isHolder(msg.sender), "Must hold one of the allowed NFTs to mint");
+        // require(numMinted[msg.sender] < MAX_MINTS_PER_WALLET, "Max mints per wallet reached");
+
+        uint256 randomType = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, tokenCounter))) % 7;
         require(NFT_MINTED[randomType] < NFT_LIMITS[randomType], "NFT type limit reached");
 
         uint256 newTokenId = tokenCounter++;
@@ -151,5 +174,13 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable { // Add
     // Check if minting is currently paused
     function isMintingPaused() public view returns (bool) {
         return paused();
+    }
+
+    function updateAllowedContracts(address[] calldata _contracts) external onlyOwner {
+        allowedContracts = _contracts;
+    }
+
+    function getAllowedContracts() external view returns (address[] memory) {
+        return allowedContracts;
     }
 }

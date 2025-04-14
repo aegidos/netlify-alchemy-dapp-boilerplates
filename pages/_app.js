@@ -124,7 +124,8 @@ function WalletWrapper({ children }) {
           '0xa096af26affe37cc2a56ecf381b754a20b6ddf20',  // OVISAURS
           '0x35b70c728ce7bc2e2593100673a0ccd9ef4e1c7b',  // spunkys
           '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6',  // Pixl Pals
-          '0x0178a9d0b0cba1b2ede3afdb6dd021db24ff4240'  // Forever Undead
+          '0x0178a9d0b0cba1b2ede3afdb6dd021db24ff4240',  // Forever Undead
+          '0x3F398d9DBa769c8Bd4A3298aBb68E376100e213C' //Curtis Test NFT
         ];
 
         for (const contractAddress of contractAddresses) {

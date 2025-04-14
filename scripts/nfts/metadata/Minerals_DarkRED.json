@@ -1,0 +1,15 @@
+{
+  "name": "Dark Red Crystals",
+  "description": "Dark red crystals packed with powerfull dark energy",
+  "image": "ipfs://QmaxgEiMofXFqiW6hDip6MJGnFEpiSNo44fMdfV8S6PWZj",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Ressource"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    }
+  ]
+}

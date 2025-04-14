@@ -13,31 +13,31 @@ async function main() {
 
   console.log("Reading metadata URLs from upload results...");
 
-  // Extract and validate base URIs (A-F)
+  // Extract and validate base URIs (A-G)
   const baseURIs = uploadResults
-    .slice(0, 6)
+    .slice(0, 7)
     .map(result => result.metadataUrl);
 
   // Verify all base URIs exist
-  if (baseURIs.length !== 6 || baseURIs.some(uri => !uri)) {
-    throw new Error('Missing or invalid base URIs. Need exactly 6 base URIs (A-F).');
+  if (baseURIs.length !== 7 || baseURIs.some(uri => !uri)) {
+    throw new Error('Missing or invalid base URIs. Need exactly 7 base URIs (A-G).');
   }
   
-  // Extract evolved URIs (G-J)
+  // Extract evolved URIs (H-L)
   const evolvedURIs = uploadResults
-    .slice(6, 10)
+    .slice(7, 12)
     .map(result => result.metadataUrl);
 
-  if (evolvedURIs.length !== 4 || evolvedURIs.some(uri => !uri)) {
-    throw new Error('Missing or invalid evolved URIs. Need exactly 4 evolved URIs (G-J).');
+  if (evolvedURIs.length !== 5 || evolvedURIs.some(uri => !uri)) {
+    throw new Error('Missing or invalid evolved URIs. Need exactly 5 evolved URIs (H-L).');
   }
 
   // Log all URIs for verification
-  console.log("\nBase NFT URIs (A-F):");
+  console.log("\nBase NFT URIs (A-G):");
   baseURIs.forEach((uri, i) => console.log(`Type ${String.fromCharCode(65 + i)}: ${uri}`));
   
-  console.log("\nEvolved NFT URIs (G-J):");
-  evolvedURIs.forEach((uri, i) => console.log(`Type ${String.fromCharCode(71 + i)}: ${uri}`));
+  console.log("\nEvolved NFT URIs (H-L):");
+  evolvedURIs.forEach((uri, i) => console.log(`Type ${String.fromCharCode(72 + i)}: ${uri}`));
 
   // Get deployer account
   const [deployer] = await hre.viem.getWalletClients();
@@ -48,7 +48,7 @@ async function main() {
   const chainId = await publicClient.getChainId();
   console.log("Network ChainId:", chainId);
 
-  // Deploy contract
+  // Deploy contract - Update this section
   const ApeChainPoWNFT = await hre.viem.deployContract("ApeChainPoWNFT", [
     baseURIs,
     evolvedURIs
