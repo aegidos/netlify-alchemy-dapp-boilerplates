@@ -1,0 +1,2 @@
+await contract.setMerkleRoot("0x9693250de6656ab361cfc74f4b10b6564f0652b9bb32f70b5f70abf3c733e993");
+const contract = await ethers.getContractAt("ApeChainPoWNFT", "0xb2e7896ff8aaa9b3c9ddeaa2541fb8ea65175fce");

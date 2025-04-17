@@ -4,35 +4,58 @@ import { useRouter } from 'next/router';
 import styles from '../styles/BurnNFTs.module.css';
 import axios from 'axios';
 import { createPublicClient, createWalletClient, http, custom } from 'viem';
+import { ethers } from 'ethers';
 
 const APECHAIN_RPC = 'https://apechain.calderachain.xyz/http';
-const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';
+//const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';//productive contract
+const CONTRACT_ADDRESS = '0xb2e7896ff8aaa9b3c9ddeaa2541fb8ea65175fce';//productive contract
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const ALCHEMY_API_URL = `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}/getNFTsForOwner`;
 
-const apeChain = {
-  id: 33139,
-  name: 'ApeChain',
-  network: 'apechain',
+// const apeChain = {
+//   id: 33139,
+//   name: 'ApeChain',
+//   network: 'apechain',
+//   nativeCurrency: {
+//     name: 'APE',
+//     symbol: 'APE',
+//     decimals: 18,
+//   },
+//   rpcUrls: {
+//     default: {
+//       http: [APECHAIN_RPC],
+//     },
+//     public: {
+//       http: [APECHAIN_RPC],
+//     },
+//   },
+//   blockExplorers: {
+//     default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
+//   },
+//   testnet: false
+// };
+const curtisNetwork = {
+  id: 33111,
+  name: 'Curtis',
+  network: 'curtis',
   nativeCurrency: {
     name: 'APE',
     symbol: 'APE',
     decimals: 18,
   },
   rpcUrls: {
-    default: {
-      http: [APECHAIN_RPC],
-    },
     public: {
-      http: [APECHAIN_RPC],
+      http: ['https://curtis.rpc.caldera.xyz/http'],
+    },
+    default: {
+      http: ['https://curtis.rpc.caldera.xyz/http'],
     },
   },
   blockExplorers: {
-    default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
+    default: { name: 'Curtis Explorer', url: 'https://curtis.explorer.caldera.xyz/' },
   },
-  testnet: false
+  testnet: true,
 };
-
 const NFT_TYPES = {
   0: "HUSHROOMS",
   1: "FIREGRASSBUSH", 
@@ -48,14 +71,16 @@ const NFT_TYPES = {
 
 const ABI = [
   {
-    inputs: [{ internalType: "address", name: "to", type: "address" }],
+    inputs: [
+      { internalType: "bytes32[]", name: "merkleProof", type: "bytes32[]" }
+    ],
     name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"
   }
-  
 ];
+
 const ABI2 = [
 {
   inputs: [{ internalType: "uint256[]", name: "tokenIds", type: "uint256[]" }],
@@ -115,9 +140,23 @@ export default function MembersOnly() {
   const [showModal, setShowModal] = useState(false);
   const [shouldReload, setShouldReload] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [proofs, setProofs] = useState(null);
 
   useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchProofs = async () => {
+      try {
+        const response = await fetch('/proofs.json');
+        const data = await response.json();
+        setProofs(data);
+      } catch (error) {
+        console.error('Error loading proofs:', error);
+      }
+    };
+    fetchProofs();
   }, []);
 
   useEffect(() => {
@@ -430,31 +469,24 @@ export default function MembersOnly() {
     }
   };
 
-  const mintNFT = async () => {
-    if (!address) return;
-    
-    try {
-      const response = await fetch('/api/check-mint-count', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address })
-      });
+  async function mintNFT() {
+    if (!address || !proofs) return;
 
-      const data = await response.json();
-      
-      if (data.count >= 12) {
-        setShowModal(true);
-        return;
+    try {
+      const proof = proofs[address.toLowerCase()];
+
+      if (!proof) {
+        throw new Error('Address not in allowlist');
       }
 
       setIsMinting(true);
       setMintStatus('Initiating minting process...');
-      
+
       await window.ethereum.request({ method: 'eth_requestAccounts' });
-      
+
       const walletClient = createWalletClient({
         account: address,
-        chain: apeChain,
+        chain: curtisNetwork,
         transport: custom(window.ethereum)
       });
 
@@ -462,7 +494,7 @@ export default function MembersOnly() {
         address: CONTRACT_ADDRESS,
         abi: ABI,
         functionName: 'mint',
-        args: [address],
+        args: [proof], // Pass the Merkle proof here
         gas: BigInt(3000000),
         maxFeePerGas: BigInt(100000000000),
         maxPriorityFeePerGas: BigInt(4000000000)
@@ -478,7 +510,7 @@ export default function MembersOnly() {
     } finally {
       setIsMinting(false);
     }
-  };
+  }
 
   if (!isClient || isVerifying || !isWalletReady) return null;
   if (!hasAccess) return null;
@@ -524,15 +556,24 @@ export default function MembersOnly() {
         )}
       </div>
 
-      <button 
-        onClick={mintNFT}
-        disabled={isMinting}
-        data-mint-button="true"
-        style={{ display: 'none' }}
-      >
-        Mint NFT
-      </button>
-
+  <button 
+  onClick={mintNFT}
+  disabled={isMinting}
+  data-mint-button="true"
+  className={styles.mintButton} // Add a CSS class for styling
+  style={{
+    padding: '12px 24px',
+    backgroundColor: '#4a524a',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: isMinting ? 'not-allowed' : 'pointer',
+    opacity: isMinting ? 0.7 : 1,
+    transition: 'all 0.2s ease'
+  }}
+>
+  {isMinting ? 'Minting...' : 'Mint NFT'}
+</button>
       {showModal && (
         <div style={{
           position: 'fixed',

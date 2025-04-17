@@ -49,9 +49,30 @@ const apeChain = {
   },
   testnet: false,
 };
-
+const curtisNetwork = {
+  id: 33111,
+  name: 'Curtis',
+  network: 'curtis',
+  nativeCurrency: {
+    name: 'APE',
+    symbol: 'APE',
+    decimals: 18,
+  },
+  rpcUrls: {
+    public: {
+      http: ['https://curtis.rpc.caldera.xyz/http'],
+    },
+    default: {
+      http: ['https://curtis.rpc.caldera.xyz/http'],
+    },
+  },
+  blockExplorers: {
+    default: { name: 'Curtis Explorer', url: 'https://curtis.explorer.caldera.xyz/' },
+  },
+  testnet: true,
+};
 const { chains, provider } = configureChains(
-  [apeChain],
+  [curtisNetwork],
   [
     alchemyProvider({ 
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
@@ -205,7 +226,7 @@ function MyApp({ Component, pageProps }) {
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider
           modalSize="compact"
-          initialChain={apeChain}
+          initialChain={curtisNetwork}
           chains={chains}
         >
           <WalletWrapper>
