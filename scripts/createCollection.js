@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const API_KEY = process.env.NFT_STORAGE_KEY?.trim();
-const CONTRACT_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';
 
 async function createCollection() {
   // Log the request details for debugging

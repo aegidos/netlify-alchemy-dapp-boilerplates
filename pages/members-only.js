@@ -8,8 +8,8 @@ import { ethers } from 'ethers';
 
 const CURTIS_RPC = 'https://curtis.rpc.caldera.xyz/http';
 const APECHAIN_RPC = 'https://apechain.calderachain.xyz/http';
-//const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';//productive contract
-const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';//Test Curtis contract
+const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';//productive contract
+//const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';//Test Curtis contract
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const ALCHEMY_API_URL = `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}/getNFTsForOwner`;
 

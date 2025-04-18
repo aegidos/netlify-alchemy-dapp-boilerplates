@@ -1,7 +1,7 @@
 import { createPublicClient, createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
-const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';
+const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const APECHAIN_RPC = 'https://apechain.calderachain.xyz/http';
 

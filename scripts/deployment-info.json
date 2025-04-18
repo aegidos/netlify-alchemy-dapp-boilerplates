@@ -1,8 +1,8 @@
 {
   "contractAddress": "0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac",
-  "chainId": 33111,
+  "chainId": 33139,
   "deployer": "0x53aa577071e848c2789159842051f992dc22bb51",
-  "timestamp": "2025-04-17T11:53:09.885Z",
+  "timestamp": "2025-04-18T19:28:47.414Z",
   "baseNftURIsPLANTS": [
     "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
     "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",
