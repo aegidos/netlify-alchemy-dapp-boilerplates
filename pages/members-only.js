@@ -6,34 +6,35 @@ import axios from 'axios';
 import { createPublicClient, createWalletClient, http, custom } from 'viem';
 import { ethers } from 'ethers';
 
+const CURTIS_RPC = 'https://curtis.rpc.caldera.xyz/http';
 const APECHAIN_RPC = 'https://apechain.calderachain.xyz/http';
 //const CONTRACT_ADDRESS = '0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d';//productive contract
-const CONTRACT_ADDRESS = '0xb2e7896ff8aaa9b3c9ddeaa2541fb8ea65175fce';//productive contract
+const CONTRACT_ADDRESS = '0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac';//Test Curtis contract
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const ALCHEMY_API_URL = `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}/getNFTsForOwner`;
 
-// const apeChain = {
-//   id: 33139,
-//   name: 'ApeChain',
-//   network: 'apechain',
-//   nativeCurrency: {
-//     name: 'APE',
-//     symbol: 'APE',
-//     decimals: 18,
-//   },
-//   rpcUrls: {
-//     default: {
-//       http: [APECHAIN_RPC],
-//     },
-//     public: {
-//       http: [APECHAIN_RPC],
-//     },
-//   },
-//   blockExplorers: {
-//     default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
-//   },
-//   testnet: false
-// };
+const apeChain = {
+  id: 33139,
+  name: 'ApeChain',
+  network: 'apechain',
+  nativeCurrency: {
+    name: 'APE',
+    symbol: 'APE',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: [APECHAIN_RPC],
+    },
+    public: {
+      http: [APECHAIN_RPC],
+    },
+  },
+  blockExplorers: {
+    default: { name: 'ApeChain Explorer', url: 'https://apechain.calderaexplorer.xyz/' },
+  },
+  testnet: false
+};
 const curtisNetwork = {
   id: 33111,
   name: 'Curtis',
@@ -367,7 +368,71 @@ export default function MembersOnly() {
       console.error('Error fetching NFTs from Alchemy:', error);
     }
   };
+  const fetchNFTsCURT = async () => {
+    if (!address) return;
 
+    try {
+        const provider = createPublicClient({
+            chain: apeChain,
+            transport: http(CURTIS_RPC)
+        });
+
+        // Create contract instance
+        const nftContract = {
+            address: CONTRACT_ADDRESS,
+            abi: [
+                "function balanceOf(address owner) view returns (uint256)",
+                "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                "function tokenURI(uint256 tokenId) view returns (string)",
+                "function tokenTypes(uint256) view returns (uint8)"
+            ]
+        };
+
+        // Get balance
+        const balance = await provider.readContract({
+            ...nftContract,
+            functionName: 'balanceOf',
+            args: [address]
+        });
+
+        const nfts = [];
+        
+        // Fetch each token
+        for (let i = 0; i < Number(balance); i++) {
+            try {
+                // Get token ID
+                const tokenId = await provider.readContract({
+                    ...nftContract,
+                    functionName: 'tokenOfOwnerByIndex',
+                    args: [address, i]
+                });
+
+                // Get token type
+                const typeNum = await provider.readContract({
+                    ...nftContract,
+                    functionName: 'tokenTypes',
+                    args: [tokenId]
+                });
+
+                const nftType = NFT_TYPES[Number(typeNum)] || 'Unknown';
+
+                nfts.push({
+                    tokenId: tokenId.toString(),
+                    type: nftType,
+                    title: `NFT #${tokenId}`,
+                });
+            } catch (err) {
+                console.error(`Error fetching token ${i}:`, err);
+            }
+        }
+
+        console.log('Fetched NFTs:', nfts);
+        setUserNFTs(nfts);
+
+    } catch (error) {
+        console.error('Error fetching NFTs:', error);
+    }
+};
   useEffect(() => {
     fetchNFTs();
   }, [address]);
@@ -473,42 +538,46 @@ export default function MembersOnly() {
     if (!address || !proofs) return;
 
     try {
-      const proof = proofs[address.toLowerCase()];
+        // Access the nested proofs object correctly
+        const proof = proofs.proofs[address];
+        
+        console.log('Address:', address);
+        console.log('Available addresses:', Object.keys(proofs.proofs));
+        console.log('Proof found:', proof);
 
-      if (!proof) {
-        throw new Error('Address not in allowlist');
-      }
+        if (!proof) {
+            throw new Error('Address not in allowlist');
+        }
 
-      setIsMinting(true);
-      setMintStatus('Initiating minting process...');
+        setIsMinting(true);
+        setMintStatus('Initiating minting process...');
 
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-      const walletClient = createWalletClient({
-        account: address,
-        chain: curtisNetwork,
-        transport: custom(window.ethereum)
-      });
+        const walletClient = createWalletClient({
+            account: address,
+            chain: apeChain,
+            transport: custom(window.ethereum)
+        });
 
-      const txHash = await walletClient.writeContract({
-        address: CONTRACT_ADDRESS,
-        abi: ABI,
-        functionName: 'mint',
-        args: [proof], // Pass the Merkle proof here
-        gas: BigInt(3000000),
-        maxFeePerGas: BigInt(100000000000),
-        maxPriorityFeePerGas: BigInt(4000000000)
-      });
+        const txHash = await walletClient.writeContract({
+            address: CONTRACT_ADDRESS,
+            abi: ABI,
+            functionName: 'mint',
+            args: [proof],
+            gas: BigInt(3000000)
+        });
 
-      setMintStatus(`Transaction sent! Hash: ${txHash}`);
-      setTimeout(() => {
-        fetchNFTs();
-      }, 2000);
+        setMintStatus(`Transaction sent! Hash: ${txHash}`);
+        setTimeout(() => {
+            fetchNFTs();
+        }, 2000);
+
     } catch (error) {
-      console.error('Error minting NFT:', error);
-      setMintStatus(`Error: ${error.message}`);
+        console.error('Error minting NFT:', error);
+        setMintStatus(`Error: ${error.message}`);
     } finally {
-      setIsMinting(false);
+        setIsMinting(false);
     }
   }
 

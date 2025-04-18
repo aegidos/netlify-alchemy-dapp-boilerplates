@@ -39,10 +39,13 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
         string resultURI;
     }
 
+    Recipe[] public recipesELIXIR;
     Recipe[] public recipes;
 
     bytes32 public merkleRoot;
     bool public mintingComplete;
+
+    bool public secondaryMarketReleased;
 
     event NFTMinted(address indexed miner, uint256 tokenId, uint8 nftType);
     event NFTBurned(uint256[] burnedTokens, uint256 newTokenId, uint8 newType);
@@ -59,6 +62,10 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
         ERC721("Apes in Space on Ape (Weapons)", "AISAW")
         Ownable(msg.sender)
     {
+        plantsPhaseComplete = false;
+        merkleRoot = _merkleRoot;
+        mintingComplete = false;
+        secondaryMarketReleased = false;  // Add this line
         // Initialize PLANTS limits
         NFT_LIMITS_PLANTS[0] = 150;
         NFT_LIMITS_PLANTS[1] = 600;
@@ -124,6 +131,24 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
         recipes[4].ingredients[0] = 4;
         recipes[4].ingredients[1] = 6;
         recipes[4].ingredients[2] = 5;
+
+        // Initialize ELIXIR recipes
+        recipesELIXIR.push(Recipe(new uint8[](2), 6, _evolvedNftURIsELIXIRS[0])); // E + F = G
+        recipesELIXIR[0].ingredients[0] = 4;
+        recipesELIXIR[0].ingredients[1] = 5;
+
+        recipesELIXIR.push(Recipe(new uint8[](2), 7, _evolvedNftURIsELIXIRS[1])); // C + D = H
+        recipesELIXIR[1].ingredients[0] = 2;
+        recipesELIXIR[1].ingredients[1] = 3;
+
+        recipesELIXIR.push(Recipe(new uint8[](2), 8, _evolvedNftURIsELIXIRS[2])); // B + F = I
+        recipesELIXIR[2].ingredients[0] = 1;
+        recipesELIXIR[2].ingredients[1] = 5;
+
+        recipesELIXIR.push(Recipe(new uint8[](3), 9, _evolvedNftURIsELIXIRS[3])); // A + D + F = J
+        recipesELIXIR[3].ingredients[0] = 0;
+        recipesELIXIR[3].ingredients[1] = 3;
+        recipesELIXIR[3].ingredients[2] = 5;
 
         _setDefaultRoyalty(msg.sender, 500);
     }
@@ -295,17 +320,36 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
             string memory
         )
     {
-        for (uint256 i = 0; i < recipes.length; i++) {
-            if (types.length == recipes[i].ingredients.length) {
-                bool matches = true;
-                for (uint256 j = 0; j < types.length; j++) {
-                    if (types[j] != recipes[i].ingredients[j]) {
-                        matches = false;
-                        break;
+        // Check ELIXIR recipes if in PLANTS phase
+        if (!plantsPhaseComplete) {
+            for (uint256 i = 0; i < recipesELIXIR.length; i++) {
+                if (types.length == recipesELIXIR[i].ingredients.length) {
+                    bool matches = true;
+                    for (uint256 j = 0; j < types.length; j++) {
+                        if (types[j] != recipesELIXIR[i].ingredients[j]) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        return (true, recipesELIXIR[i].result, recipesELIXIR[i].resultURI);
                     }
                 }
-                if (matches) {
-                    return (true, recipes[i].result, recipes[i].resultURI);
+            }
+        } else {
+            // Check WEAPONS recipes
+            for (uint256 i = 0; i < recipes.length; i++) {
+                if (types.length == recipes[i].ingredients.length) {
+                    bool matches = true;
+                    for (uint256 j = 0; j < types.length; j++) {
+                        if (types[j] != recipes[i].ingredients[j]) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        return (true, recipes[i].result, recipes[i].resultURI);
+                    }
                 }
             }
         }
@@ -335,13 +379,25 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
         mintingComplete = true;
     }
 
+    // Add this function after completeMinting()
+    function completePlantsPhase() external onlyOwner {
+        require(!plantsPhaseComplete, "Plants phase already completed");
+        plantsPhaseComplete = true;
+        emit MintingPaused(msg.sender); // Emit event for transparency
+        _pause(); // Pause minting for phase transition
+    }
+
+    function releaseSecondaryMarket() external onlyOwner {
+        secondaryMarketReleased = true;
+    }
+
     function approve(address to, uint256 tokenId) public override(ERC721, IERC721) {
-        require(!mintingComplete, "Approvals locked until minting complete");
+        require(mintingComplete || secondaryMarketReleased, "Approvals locked: minting ongoing and secondary market not released");
         super.approve(to, tokenId);
     }
 
     function setApprovalForAll(address operator, bool approved) public override(ERC721, IERC721) {
-        require(!mintingComplete, "Approvals locked until minting complete");
+        require(mintingComplete || secondaryMarketReleased, "Approvals locked: minting ongoing and secondary market not released");
         super.setApprovalForAll(operator, approved);
     }
 }
