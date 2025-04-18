@@ -72,7 +72,7 @@ const curtisNetwork = {
   testnet: true,
 };
 const { chains, provider } = configureChains(
-  [curtisNetwork],
+  [apeChain],
   [
     alchemyProvider({ 
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY
@@ -226,7 +226,7 @@ function MyApp({ Component, pageProps }) {
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider
           modalSize="compact"
-          initialChain={curtisNetwork}
+          initialChain={apeChain}
           chains={chains}
         >
           <WalletWrapper>
