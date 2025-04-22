@@ -222,15 +222,61 @@ export default function MembersOnly() {
     verifyAccess();
   }, [isClient, isConnected, address]);
 
+  const mintNFT = async () => {
+    if (!address || !proofs) return;
+
+    try {
+        const proof = proofs.proofs[address];
+        
+        console.log('Address:', address);
+        console.log('Available addresses:', Object.keys(proofs.proofs));
+        console.log('Proof found:', proof);
+
+        if (!proof) {
+            throw new Error('Address not in allowlist');
+        }
+
+        setIsMinting(true);
+        setMintStatus('Initiating minting process...');
+
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        const walletClient = createWalletClient({
+            account: address,
+            chain: apeChain,
+            transport: custom(window.ethereum)
+        });
+
+        const txHash = await walletClient.writeContract({
+            address: CONTRACT_ADDRESS,
+            abi: ABI,
+            functionName: 'mint',
+            args: [proof],
+            gas: BigInt(3000000)
+        });
+
+        setMintStatus(`Transaction sent! Hash: ${txHash}`);
+        setTimeout(() => {
+            fetchNFTs();
+        }, 2000);
+
+    } catch (error) {
+        console.error('Error minting NFT:', error);
+        setMintStatus(`Error: ${error.message}`);
+    } finally {
+        setIsMinting(false);
+    }
+  };
+
   useEffect(() => {
-    const handleMintRequest = (event) => {
+    const handleMintRequest = async (event) => {
         console.log('Mint requested from game:', event.detail);
-        mintNFT();
+        await mintNFT();
     };
 
     window.addEventListener('requestMint', handleMintRequest);
     return () => window.removeEventListener('requestMint', handleMintRequest);
-  }, []);
+  }, [address, proofs]);
 
   useEffect(() => {
     console.log('Members page mounted');
@@ -533,53 +579,6 @@ export default function MembersOnly() {
       setStatusMessage(`Error: ${error.message}`);
     }
   };
-
-  async function mintNFT() {
-    if (!address || !proofs) return;
-
-    try {
-        // Access the nested proofs object correctly
-        const proof = proofs.proofs[address];
-        
-        console.log('Address:', address);
-        console.log('Available addresses:', Object.keys(proofs.proofs));
-        console.log('Proof found:', proof);
-
-        if (!proof) {
-            throw new Error('Address not in allowlist');
-        }
-
-        setIsMinting(true);
-        setMintStatus('Initiating minting process...');
-
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-        const walletClient = createWalletClient({
-            account: address,
-            chain: apeChain,
-            transport: custom(window.ethereum)
-        });
-
-        const txHash = await walletClient.writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ABI,
-            functionName: 'mint',
-            args: [proof],
-            gas: BigInt(3000000)
-        });
-
-        setMintStatus(`Transaction sent! Hash: ${txHash}`);
-        setTimeout(() => {
-            fetchNFTs();
-        }, 2000);
-
-    } catch (error) {
-        console.error('Error minting NFT:', error);
-        setMintStatus(`Error: ${error.message}`);
-    } finally {
-        setIsMinting(false);
-    }
-  }
 
   if (!isClient || isVerifying || !isWalletReady) return null;
   if (!hasAccess) return null;
