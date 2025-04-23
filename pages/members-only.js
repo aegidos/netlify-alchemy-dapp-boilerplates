@@ -636,8 +636,11 @@ export default function MembersOnly() {
     border: 'none',
     borderRadius: '4px',
     cursor: isMinting ? 'not-allowed' : 'pointer',
-    opacity: isMinting ? 0.7 : 1,
-    transition: 'all 0.2s ease'
+    opacity: 0,  // Changed from 1 to 0
+    transition: 'all 0.2s ease',
+    visibility: 'hidden',  // Added this line
+    position: 'absolute', // Added this line
+    pointerEvents: 'none' // Added this line to prevent any mouse interaction
   }}
 >
   {isMinting ? 'Minting...' : 'Mint NFT'}
