@@ -24,12 +24,12 @@ const translations = {
       <h2>Fuel Your Journey with Rare Plants</h2>
       <p>To survive and grow stronger, apes must consume energy-rich, native flora unique to the alien world. These include:</p>
       <ul>
-        <li>🍄 Hushrooms (Max 150)</li>
-        <li>🌿 Firegrass (Max 600)</li>
-        <li>💩 Stinkballs (Max 1000)</li>
-        <li>🍃 Blueleafs (Max 1000)</li>
-        <li>🌱 Snakeroots (Max 1300)</li>
-        <li>🔴 Rangones (Max 800)</li>
+        <li>🍄 Hushrooms (Legendary)</li>
+        <li>🌿 Firegrass (Epic)</li>
+        <li>🔴 Rangones (Rare)</li>
+        <li>💩 Stinkballs (Uncommon)</li>
+        <li>🍃 Blueleafs (Uncommon)</li>
+        <li>🌱 Snakeroots (Common)</li>
       </ul>
       <p>Each plant type varies in availability and energy value. Collecting and managing these resources is key to long-term survival and progression.</p>
 
