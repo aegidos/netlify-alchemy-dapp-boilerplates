@@ -1,8 +1,8 @@
 {
-  "contractAddress": "0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac",
+  "contractAddress": "0x6b70b49748abe1191107f20a8f176d50f63050c1",
   "chainId": 33139,
   "deployer": "0x53aa577071e848c2789159842051f992dc22bb51",
-  "timestamp": "2025-04-18T19:28:47.414Z",
+  "timestamp": "2025-04-27T19:39:05.587Z",
   "baseNftURIsPLANTS": [
     "ipfs://QmYvCqRjSLhGqM1JLH1qGJhiMcXuHYFLcYrY43hZBEQ8qS",
     "ipfs://QmSbSGLNPzHagxRuJxPspVQa2mGi511UFRkiXvtFAXEHpX",
@@ -33,5 +33,5 @@
     "ipfs://QmT4sSuJ9GfGF6XSUR7vajjsfdjGRZtPBCF9c95zYo32a7",
     "ipfs://QmZBBf7inbYFiL1je3tEQB7uhkMXSurZZycWYyFkUSJYWv"
   ],
-  "merkleRoot": "0xf9c8863e94c6a28188c9116c916c7ad0ecfa362bbd4e258d86061f2bcdeb0eda"
+  "merkleRoot": "0x3cc498078175bffde46d3bdba132f01fe0296bf1c3d10cd59a4b6fcadb39332a"
 }

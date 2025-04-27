@@ -25,6 +25,38 @@ const CONTRACTS = [
         address: '0x91417bd88af5071ccea8d3bf3af410660e356b06',
         name: 'zards',
     },
+    {
+        address: '0xee0c1016fe325fa755be196cc3fc4d6661e84b11',
+        name: 'ETHEREA',
+    },
+    {
+        address: '0x23abf38a6d3ad137c0b219b51243cf326ed66039',
+        name: 'Nekito',
+    },
+    {
+        address: '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6',
+        name: 'Pixl Pals',
+    },
+    {
+        address: '0xb1cd9a49d51b753b25878c150a920a9294f45022',
+        name: 'ASHITA NO KAZE',
+    },
+    {
+        address: '0xe277a7643562775c4f4257e23b068ba8f45608b4',
+        name: 'Primal Cult',
+    },
+    {
+        address: '0xcf2e5437b2944def3fc72b0a7488e87467c7d76c',
+        name: 'Froglings',
+    },
+    {
+        address: '0x7166dde47b3a6c75eec75c5367ff1f629b1a4603',
+        name: 'Driftlands',
+    },
+    {
+        address: '0x1B094A5B06ce05FE443E7cF0B5fDcD6673eb735D', 
+        name: 'Trenchers on Ape',
+    },
 ];
 
 // Additional allowed wallet addresses

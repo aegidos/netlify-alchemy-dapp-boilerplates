@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 const SPECIES_NAMES = {
     0: "PURPLUS",
     1: "KIWIOPTERYX",
@@ -10,7 +12,9 @@ const SPECIES_NAMES = {
 };
 
 // Contract configuration
-const CONTRACT_ADDRESS = "0xac1bedce1cd0b98a89a6cf81c6c7cb7e4cff69ac";
+const CONTRACT_ADDRESS = "0x6b70b49748abe1191107f20a8f176d50f63050c1";
+
+
 
 function Ranking() {
     this.id = SCENE.RANKING;
@@ -467,20 +471,50 @@ function triggerMintButton() {
 }
 
 // Update your score saving function
-Ranking.prototype.saveScore = function(i) {
+Ranking.prototype.saveScore = async function(i) {
     if (game.players[i].total_score > 0) {
+        // Get wallet address from URL params
         const urlParams = new URLSearchParams(window.location.search);
         const walletAddress = urlParams.get('wallet');
-        
+
         if (walletAddress) {
-            // Dispatch custom event to parent window
-            const mintEvent = new CustomEvent('requestMint', {
-                detail: {
-                    address: walletAddress,
-                    score: game.players[i].total_score
+            console.log("Saving score for wallet:", walletAddress);
+            
+            // Save score using API endpoint
+            fetch("/api/scores", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    score: game.players[i].total_score,
+                    species: SPECIES_NAMES[i],
+                    timestamp: new Date().toISOString(),
+                    walletaddress: walletAddress,
+                    turn: game.turn
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Score saved successfully:", data);
+                
+                // Dispatch mint event to parent window
+                const mintEvent = new CustomEvent('requestMint', {
+                    detail: {
+                        address: walletAddress,
+                        score: game.players[i].total_score
+                    }
+                });
+                window.parent.dispatchEvent(mintEvent);
+            })
+            .catch(error => {
+                console.error("Error saving score:", error);
             });
-            window.parent.dispatchEvent(mintEvent);
         }
     }
 };

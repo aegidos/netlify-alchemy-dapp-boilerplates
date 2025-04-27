@@ -7,11 +7,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
+contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable, ReentrancyGuard {
     uint256 public tokenCounter;
     uint256 public constant MAX_MINTS_PER_WALLET = 12;
     uint256 public constant MAX_MINTS_PHASE2 = 24;
+    uint256 public constant MAX_BURN_BATCH_SIZE = 10;
 
     // Phase tracking
     bool public plantsPhaseComplete;
@@ -51,6 +53,9 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
     event NFTBurned(uint256[] burnedTokens, uint256 newTokenId, uint8 newType);
     event MintingPaused(address indexed pauser);
     event MintingUnpaused(address indexed unpauser);
+    event MerkleRootUpdated(bytes32 newRoot);
+    event PhaseCompleted(string phase);
+    event SecondaryMarketReleased(bool released);
 
     constructor(
         string[6] memory _baseNftURIsPLANTS,
@@ -268,7 +273,9 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
 
     // Function to update the Merkle root (onlyOwner)
     function setMerkleRoot(bytes32 _merkleRoot) external onlyOwner {
+        require(_merkleRoot != bytes32(0), "Invalid merkle root");
         merkleRoot = _merkleRoot;
+        emit MerkleRootUpdated(_merkleRoot);
     }
 
     // Add this function to help debug merkle proof issues
@@ -284,8 +291,8 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
     }
 
     // Modify burnAndMint to handle both PLANTS/ELIXIRS and WEAPONS
-    function burnAndMint(uint256[] calldata tokenIds) public {
-        require(tokenIds.length > 0, "Must burn at least one token");
+    function burnAndMint(uint256[] calldata tokenIds) public nonReentrant {
+        require(tokenIds.length > 0 && tokenIds.length <= MAX_BURN_BATCH_SIZE, "Invalid batch size");
 
         uint8[] memory types = new uint8[](tokenIds.length);
         for (uint256 i = 0; i < tokenIds.length; i++) {
@@ -365,6 +372,11 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
         return super.supportsInterface(interfaceId);
     }
 
+    // Add this function after supportsInterface
+    function totalSupply() public view returns (uint256) {
+        return tokenCounter;
+    }
+
     // Check if minting is currently paused
     function isMintingPaused() public view returns (bool) {
         return paused();
@@ -389,6 +401,7 @@ contract ApeChainPoWNFT is ERC721URIStorage, ERC2981, Ownable, Pausable {
 
     function releaseSecondaryMarket() external onlyOwner {
         secondaryMarketReleased = true;
+        emit SecondaryMarketReleased(true);
     }
 
     function approve(address to, uint256 tokenId) public override(ERC721, IERC721) {

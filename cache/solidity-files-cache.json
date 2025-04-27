@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/aegidos/web3/apesofberlin/netlify-alchemy-dapp-boilerplates/contracts/ApeChainPoWNFT.sol": {
-      "lastModificationDate": 1744890775566,
-      "contentHash": "11e79abd6ff339c00aeb811b5a4c58e1",
+      "lastModificationDate": 1745782014673,
+      "contentHash": "e20f97c1955b2640c6c2b564aff9b9ef",
       "sourceName": "contracts/ApeChainPoWNFT.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -35,7 +35,8 @@
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/utils/Pausable.sol",
         "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-        "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol"
+        "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
@@ -1027,6 +1028,42 @@
       ],
       "artifacts": [
         "Hashes"
+      ]
+    },
+    "/home/aegidos/web3/apesofberlin/netlify-alchemy-dapp-boilerplates/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+      "lastModificationDate": 1743674086997,
+      "contentHash": "190613e556d509d9e9a0ea43dc5d891d",
+      "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
       ]
     }
   }
