@@ -11,21 +11,22 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Address required' });
   }
 
+           
   try {
         // Define contract addresses
         const contractAddresses = [
-          '0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90', // APE GANG
-          '0xee0c1016fe325fa755be196cc3fc4d6661e84b11', // ETHEREA
-          '0x23abf38a6d3ad137c0b219b51243cf326ed66039', // Nekito
-          '0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df', // Gs on ape
-          '0xfa1c20e0d4277b1e0b289dffadb5bd92fb8486aa', // NPC
-          '0x91417bd88af5071ccea8d3bf3af410660e356b06',  // zards
-          '0xb1cd9a49d51b753b25878c150a920a9294f45022',  // ASHITA NO KAZE
-          '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6',  // Pixl Pals
-          '0xe277a7643562775c4f4257e23b068ba8f45608b4', // Primal Cult
-          '0xcf2e5437b2944def3fc72b0a7488e87467c7d76c', // Froglings
-          '0x7166dde47b3a6c75eec75c5367ff1f629b1a4603', // Driftlands
-          '0x1B094A5B06ce05FE443E7cF0B5fDcD6673eb735D', // Trenchers on Ape
+          '0xF36f4faDEF899E839461EccB8D0Ce3d49Cff5A90', // APE GANG @BasedApeGang
+          '0xee0c1016fe325fa755be196cc3fc4d6661e84b11', // ETHEREA @nftetherea
+          '0x23abf38a6d3ad137c0b219b51243cf326ed66039', // Nekito @NekitoNFT
+          '0xb3443b6bd585ba4118cae2bedb61c7ec4a8281df', // Gs on ape @GeezOnApe 
+          '0xfa1c20e0d4277b1e0b289dffadb5bd92fb8486aa', // NPC @notapunkscult
+          '0x91417bd88af5071ccea8d3bf3af410660e356b06',  // zards @ZardsNFT 
+          '0xb1cd9a49d51b753b25878c150a920a9294f45022',  // ASHITA NO KAZE @w_tmr_
+          '0xdd2da83d07603897b2eb80dc1f7a0b567ad1c2c6',  // Pixl Pals @PixlPalsNFT
+          '0xe277a7643562775c4f4257e23b068ba8f45608b4', // Primal Cult @PrimalOnApe
+          '0xcf2e5437b2944def3fc72b0a7488e87467c7d76c', // Froglings @froglings
+          '0x7166dde47b3a6c75eec75c5367ff1f629b1a4603', // Driftlands @0xX1A 
+          '0x1B094A5B06ce05FE443E7cF0B5fDcD6673eb735D', // Trenchers on Ape @TrenchersOnApe
         ];
 
     for (const contractAddress of contractAddresses) {

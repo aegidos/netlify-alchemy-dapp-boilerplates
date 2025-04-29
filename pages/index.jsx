@@ -70,12 +70,12 @@ const translations = {
       <h2>Treibstoff für deine Reise mit seltenen Pflanzen</h2>
       <p>Um zu überleben und stärker zu werden, müssen Affen energiereiche, einheimische Flora konsumieren, die einzigartig für die außerirdische Welt ist. Dazu gehören:</p>
       <ul>
-        <li>🍄 Hushrooms (Max 150)</li>
-        <li>🌿 Feuergras (Max 600)</li>
-        <li>💩 Stinkbälle (Max 1000)</li>
-        <li>🍃 Blaublätter (Max 1000)</li>
-        <li>🌱 Schlangenwurzeln (Max 1300)</li>
-        <li>🔴 Rangonen (Max 800)</li>
+        <li>🍄 Hushrooms </li>
+        <li>🌿 Feuergras </li>
+        <li>💩 Stinkbälle </li>
+        <li>🍃 Blaublätter </li>
+        <li>🌱 Schlangenwurzeln </li>
+        <li>🔴 Rangonen </li>
       </ul>
       <p>Jede Pflanzenart variiert in Verfügbarkeit und Energiewert. Das Sammeln und Verwalten dieser Ressourcen ist der Schlüssel zum langfristigen Überleben und Fortschritt.</p>
 
@@ -235,7 +235,7 @@ export default function Home() {
           padding: '2rem 0',
           width: '100%'
         }}>
-          <a href="https://opensea.io/collection/apes-in-space-on-ape" 
+          <a href="https://opensea.io/collection/apes-in-space-on-ape-weapons-1" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
@@ -244,7 +244,7 @@ export default function Home() {
           >
             <img src="/images/opensea.svg" alt="OpenSea" width="40" height="40" />
           </a>
-          <a href="https://magiceden.io/collections/apechain/0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d" 
+          <a href="https://magiceden.io/collections/apechain/0x6b70b49748abe1191107f20a8f176d50f63050c1" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ 
