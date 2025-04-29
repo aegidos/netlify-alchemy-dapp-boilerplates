@@ -1054,7 +1054,7 @@ export default function MembersOnly() {
           borderTop: '1px solid #333',
           marginTop: '2rem'
         }}>
-          <a href="https://opensea.io/collection/apes-in-space-on-ape" 
+          <a href="https://opensea.io/collection/apes-in-space-on-ape-weapons-1" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ opacity: 0.7, transition: 'opacity 0.2s' }}
@@ -1063,7 +1063,7 @@ export default function MembersOnly() {
           >
             <img src="/images/opensea.svg" alt="OpenSea" width="40" height="40" />
           </a>
-          <a href="https://magiceden.io/collections/apechain/0x223a0d58e50bb9c03261fc34dd271a9eaf1ffb6d" 
+          <a href="https://magiceden.io/collections/apechain/0x6b70b49748abe1191107f20a8f176d50f63050c1" 
              target="_blank" 
              rel="noopener noreferrer"
              style={{ 
