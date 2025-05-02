@@ -149,6 +149,10 @@ export default function Home() {
     }
   }, [address, isConnected]);
 
+  const handleStartGame = () => {
+    router.push('/members-only');
+  };
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <main className={styles.main}>
@@ -163,6 +167,35 @@ export default function Home() {
           }}
         />
         
+        {/* START Game Button */}
+        <button
+          onClick={handleStartGame}
+          style={{
+            background: '#4c1d95', // purple-900
+            border: 'none',
+            color: 'white',
+            padding: '1rem 2rem',
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            marginTop: '2rem',
+            borderRadius: '8px',
+            fontFamily: 'monospace',
+            transition: 'all 0.2s',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.backgroundColor = '#6d28d9'; // purple-700
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.backgroundColor = '#4c1d95';
+          }}
+        >
+          START Game
+        </button>
+
         {/* Language Switcher */}
         <button
           onClick={() => setLanguage(lang => lang === 'de' ? 'en' : 'de')}
