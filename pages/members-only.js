@@ -136,7 +136,7 @@ export default function MembersOnly() {
   const [mintStatus, setMintStatus] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
   const [highscores, setHighscores] = useState([]);
-  const [isVerifying, setIsVerifying] = useState(true);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [shouldReload, setShouldReload] = useState(false);
@@ -145,6 +145,8 @@ export default function MembersOnly() {
 
   useEffect(() => {
     setIsClient(true);
+    setHasAccess(true); // Always grant access
+    setIsVerifying(false);
   }, []);
 
   useEffect(() => {
@@ -161,7 +163,7 @@ export default function MembersOnly() {
   }, []);
 
   useEffect(() => {
-    if (!isConnected || !address) return;
+    if (!isClient) return;
 
     const setupWallet = async () => {
       try {
@@ -182,44 +184,6 @@ export default function MembersOnly() {
     };
 
     setupWallet();
-  }, [isConnected, address]);
-
-  useEffect(() => {
-    const verifyAccess = async () => {
-      if (!isClient || !isConnected || !address) return;
-
-      try {
-        const lastWalletAddress = sessionStorage.getItem('lastWalletAddress');
-        
-        if (lastWalletAddress === address) {
-          setHasAccess(true);
-          setIsVerifying(false);
-          return;
-        }
-
-        const response = await fetch('/api/verify-access', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address })
-        });
-
-        const data = await response.json();
-        
-        if (data.hasAccess) {
-          setHasAccess(true);
-          sessionStorage.setItem('lastWalletAddress', address);
-        } else {
-          router.replace('/');
-        }
-      } catch (error) {
-        console.error('Access verification failed:', error);
-        router.replace('/');
-      } finally {
-        setIsVerifying(false);
-      }
-    };
-
-    verifyAccess();
   }, [isClient, isConnected, address]);
 
   const mintNFT = async () => {
@@ -299,35 +263,27 @@ export default function MembersOnly() {
   }, []);
 
   const checkWalletConnection = async () => {
-    if (!isConnected || !address) {
-      router.replace('/');
-      return;
+    if (window.ethereum?.removeAllListeners) {
+      window.ethereum.removeAllListeners();
     }
 
     try {
-      if (window.ethereum?.removeAllListeners) {
-        window.ethereum.removeAllListeners();
-      }
-
       const accounts = await window.ethereum?.request({
         method: 'eth_accounts'
       });
 
       if (accounts?.length) {
         setIsWalletReady(true);
-      } else {
-        router.replace('/');
       }
     } catch (error) {
       console.error('Wallet connection error:', error);
-      router.replace('/');
     }
   };
 
   useEffect(() => {
     const disconnectHandler = () => {
       console.log('Wallet disconnected');
-      router.replace('/');
+      setIsWalletReady(false);
     };
 
     if (window.ethereum) {
@@ -343,10 +299,13 @@ export default function MembersOnly() {
         window.ethereum.removeListener('chainChanged', checkWalletConnection);
       }
     };
-  }, [address, isConnected]);
+  }, []);
 
   const fetchNFTs = async () => {
-    if (!address) return;
+    if (!isConnected || !address) {
+      setUserNFTs([]); // Empty array when no wallet is connected
+      return;
+    }
 
     try {
       const response = await axios.get(ALCHEMY_API_URL, {
@@ -414,71 +373,7 @@ export default function MembersOnly() {
       console.error('Error fetching NFTs from Alchemy:', error);
     }
   };
-  const fetchNFTsCURT = async () => {
-    if (!address) return;
 
-    try {
-        const provider = createPublicClient({
-            chain: apeChain,
-            transport: http(CURTIS_RPC)
-        });
-
-        // Create contract instance
-        const nftContract = {
-            address: CONTRACT_ADDRESS,
-            abi: [
-                "function balanceOf(address owner) view returns (uint256)",
-                "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
-                "function tokenURI(uint256 tokenId) view returns (string)",
-                "function tokenTypes(uint256) view returns (uint8)"
-            ]
-        };
-
-        // Get balance
-        const balance = await provider.readContract({
-            ...nftContract,
-            functionName: 'balanceOf',
-            args: [address]
-        });
-
-        const nfts = [];
-        
-        // Fetch each token
-        for (let i = 0; i < Number(balance); i++) {
-            try {
-                // Get token ID
-                const tokenId = await provider.readContract({
-                    ...nftContract,
-                    functionName: 'tokenOfOwnerByIndex',
-                    args: [address, i]
-                });
-
-                // Get token type
-                const typeNum = await provider.readContract({
-                    ...nftContract,
-                    functionName: 'tokenTypes',
-                    args: [tokenId]
-                });
-
-                const nftType = NFT_TYPES[Number(typeNum)] || 'Unknown';
-
-                nfts.push({
-                    tokenId: tokenId.toString(),
-                    type: nftType,
-                    title: `NFT #${tokenId}`,
-                });
-            } catch (err) {
-                console.error(`Error fetching token ${i}:`, err);
-            }
-        }
-
-        console.log('Fetched NFTs:', nfts);
-        setUserNFTs(nfts);
-
-    } catch (error) {
-        console.error('Error fetching NFTs:', error);
-    }
-};
   useEffect(() => {
     fetchNFTs();
   }, [address]);
@@ -580,37 +475,48 @@ export default function MembersOnly() {
     }
   };
 
-  if (!isClient || isVerifying || !isWalletReady) return null;
-  if (!hasAccess) return null;
-
   return (
     <div className={styles.container}>
       <div className={styles.brewSection}>
         <h2>🧪 Brew Your Elixir</h2>
-        <div className={styles.dropdowns}>
-          {[0, 1, 2].map((index) => (
-            <select
-              key={index}
-              value={selectedNFTs[index]?.tokenId || ''}
-              onChange={(e) => handleNFTSelect(index, e.target.value)}
-              className={styles.dropdown}
-            >
-              <option value="">Select NFT {index + 1}</option>
-              {userNFTs.map((nft) => (
-                <option key={nft.tokenId} value={nft.tokenId}>
-                  {nft.type} #{nft.tokenId}
-                </option>
+        {isConnected ? (
+          <>
+            <div className={styles.dropdowns}>
+              {[0, 1, 2].map((index) => (
+                <select
+                  key={index}
+                  value={selectedNFTs[index]?.tokenId || ''}
+                  onChange={(e) => handleNFTSelect(index, e.target.value)}
+                  className={styles.dropdown}
+                >
+                  <option value="">Select NFT {index + 1}</option>
+                  {userNFTs.map((nft) => (
+                    <option key={nft.tokenId} value={nft.tokenId}>
+                      {nft.type} #{nft.tokenId}
+                    </option>
+                  ))}
+                </select>
               ))}
-            </select>
-          ))}
-        </div>
-        <button 
-          onClick={handleBrewClick}
-          className={styles.burnButton}
-          disabled={!selectedNFTs.filter(Boolean).length}
-        >
-          🧪 BREW ELIXIR
-        </button>
+            </div>
+            <button 
+              onClick={handleBrewClick}
+              className={styles.burnButton}
+              disabled={!selectedNFTs.filter(Boolean).length}
+            >
+              🧪 BREW ELIXIR
+            </button>
+          </>
+        ) : (
+          <div style={{
+            padding: '1rem',
+            textAlign: 'center',
+            backgroundColor: '#2a2a2a',
+            borderRadius: '8px',
+            margin: '1rem 0'
+          }}>
+            <p>Connect your wallet to brew elixirs and manage your NFTs</p>
+          </div>
+        )}
         {statusMessage && (
           <div style={{
             marginTop: '1rem',
@@ -624,27 +530,28 @@ export default function MembersOnly() {
         )}
       </div>
 
-  <button 
-  onClick={mintNFT}
-  disabled={isMinting}
-  data-mint-button="true"
-  className={styles.mintButton} // Add a CSS class for styling
-  style={{
-    padding: '12px 24px',
-    backgroundColor: '#4a524a',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: isMinting ? 'not-allowed' : 'pointer',
-    opacity: 0,  // Changed from 1 to 0
-    transition: 'all 0.2s ease',
-    visibility: 'hidden',  // Added this line
-    position: 'absolute', // Added this line
-    pointerEvents: 'none' // Added this line to prevent any mouse interaction
-  }}
->
-  {isMinting ? 'Minting...' : 'Mint NFT'}
-</button>
+      <button 
+        onClick={mintNFT}
+        disabled={isMinting}
+        data-mint-button="true"
+        className={styles.mintButton}
+        style={{
+          padding: '12px 24px',
+          backgroundColor: '#4a524a',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: isMinting ? 'not-allowed' : 'pointer',
+          opacity: 0,
+          transition: 'all 0.2s ease',
+          visibility: 'hidden',
+          position: 'absolute',
+          pointerEvents: 'none'
+        }}
+      >
+        {isMinting ? 'Minting...' : 'Mint NFT'}
+      </button>
+
       {showModal && (
         <div style={{
           position: 'fixed',
@@ -817,14 +724,14 @@ export default function MembersOnly() {
             </tr>
           </tbody>
         </table>
-        <div style={{
-          width: '100%',
-          maxWidth: '100%',
-          margin: '2rem auto'
+        <div style={{ 
+          width: '100%', 
+          maxWidth: '100%', 
+          margin: '2rem auto' 
         }}>
           <iframe
             key={address}
-            src={`/games/ape-game/index.html?wallet=${address || ''}`}
+            src={`/games/ape-game/index.html?wallet=${address || 'guest'}`}
             style={{
               width: '100%',
               height: '600px',
@@ -894,157 +801,6 @@ export default function MembersOnly() {
             </table>
           </div>
         </div>
-        // Add after the first table in members-only.js
-<h2 style={{ color: '#f0f0f0', marginBottom: '2rem', marginTop: '4rem' }}>⚔️ Weapon Recipes</h2>
-<table style={tableStyles.table}>
-  <thead>
-    <tr>
-      <th style={tableStyles.th}>Weapon Name</th>
-      <th style={tableStyles.th}>Result</th>
-      <th style={tableStyles.th}>Ingredient 1</th>
-      <th style={tableStyles.th}>Ingredient 2</th>
-      <th style={tableStyles.th}>Ingredient 3</th>
-    </tr>
-  </thead>
-  <tbody>
-    {/* H = 1 & 4 (Aquamarin & Yellow) */}
-    <tr>
-      <td style={tableStyles.td}>Green Axe</td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmawdD4AbpWe7EibxgeAMPNrFDT6G48UYksUStAR7HszM5" 
-          alt="Green Axe"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmVCuwBDpyfXG71CXctrdAyXZPKbEeUShiPpqkeGyRJuKt" 
-          alt="Aquamarin Crystals"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUi1U6ahXXS2FGbXuDMb8BqsHqP1yckLALcQaJkeHABvx" 
-          alt="Yellow Crystals"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>-</td>
-    </tr>
-    {/* I = 0 & 6 (Blue Sea Shell & Magic Wood) */}
-    <tr>
-      <td style={tableStyles.td}>Curved Hard Flail</td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUySUoPXyuiVHEcBg6KHR1imyzmr9ixWzqdC9TMMAZMiU" 
-          alt="Curved Hard Flail"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmRzwyfwdhpgPHKXgKBDqXS7KvPzez26aiPNeckicYQj7N" 
-          alt="Blue Sea Shell"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
-          alt="Magic Wood"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>-</td>
-    </tr>
-    {/* J = 3 & 6 (Purple Crystal & Magic Wood) */}
-    <tr>
-      <td style={tableStyles.td}>Sword of the Stones</td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmRfC7Lnm5PJfP7rLRRQFfyFykCYnjqM84L2YkmXsmxk8P" 
-          alt="Sword of the Stones"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmYPr4Wy5EXwkKsNzfv9X8YLT7puRx3zQi8iSHB3JuUqc4" 
-          alt="Purple Crystals"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
-          alt="Magic Wood"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>-</td>
-    </tr>
-    {/* K = 2 & 5 (Dark Red & Hot Lava) */}
-    <tr>
-      <td style={tableStyles.td}>Lava Sword</td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmXqjxRzc8WgWDPnosW4iBoWicfBq7ecZ3jvYkvgohqx4n" 
-          alt="Lava Sword"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmaxgEiMofXFqiW6hDip6MJGnFEpiSNo44fMdfV8S6PWZj" 
-          alt="Dark Red Crystals"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmbmjxWDsScgmxcEsYSCKfZge6qLW9odM6koZy6zEg7Dj4" 
-          alt="Hot Lava"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>-</td>
-    </tr>
-    {/* L = 4 & 6 & 5 (Yellow Crystal & Magic Wood & Hot Lava) */}
-    <tr>
-      <td style={tableStyles.td}>Necromancer's Staff</td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmS34ZbeYTKzx4GptJprz5CMDUTd6hSvyEaboYeGCVcDqk" 
-          alt="Necromancer's Staff"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUi1U6ahXXS2FGbXuDMb8BqsHqP1yckLALcQaJkeHABvx" 
-          alt="Yellow Crystals"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
-          alt="Magic Wood"
-          style={tableStyles.img}
-        />
-      </td>
-      <td style={tableStyles.td}>
-        <img 
-          src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmbmjxWDsScgmxcEsYSCKfZge6qLW9odM6koZy6zEg7Dj4" 
-          alt="Hot Lava"
-          style={tableStyles.img}
-        />
-      </td>
-    </tr>
-  </tbody>
-</table>
         <div style={{
           display: 'flex',
           gap: '2rem',
@@ -1107,18 +863,7 @@ export default function MembersOnly() {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  
-  if (!req.headers.referer?.includes(process.env.NEXT_PUBLIC_APP_URL)) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
+export async function getServerSideProps() {
   return {
     props: {},
   };
