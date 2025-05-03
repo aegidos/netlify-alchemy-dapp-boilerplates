@@ -724,6 +724,158 @@ export default function MembersOnly() {
             </tr>
           </tbody>
         </table>
+
+        <h2 style={{ color: '#f0f0f0', marginBottom: '2rem', marginTop: '4rem' }}>⚔️ Weapon Recipes</h2>
+<table style={tableStyles.table}>
+<thead>
+<tr>
+<th style={tableStyles.th}>Weapon Name</th>
+<th style={tableStyles.th}>Result</th>
+<th style={tableStyles.th}>Ingredient 1</th>
+<th style={tableStyles.th}>Ingredient 2</th>
+<th style={tableStyles.th}>Ingredient 3</th>
+</tr>
+</thead>
+<tbody>
+{/* H = 1 & 4 (Aquamarin & Yellow) */}
+<tr>
+<td style={tableStyles.td}>Green Axe</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmawdD4AbpWe7EibxgeAMPNrFDT6G48UYksUStAR7HszM5" 
+alt="Green Axe"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmVCuwBDpyfXG71CXctrdAyXZPKbEeUShiPpqkeGyRJuKt" 
+alt="Aquamarin Crystals"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUi1U6ahXXS2FGbXuDMb8BqsHqP1yckLALcQaJkeHABvx" 
+alt="Yellow Crystals"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>-</td>
+</tr>
+{/* I = 0 & 6 (Blue Sea Shell & Magic Wood) */}
+<tr>
+<td style={tableStyles.td}>Curved Hard Flail</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUySUoPXyuiVHEcBg6KHR1imyzmr9ixWzqdC9TMMAZMiU" 
+alt="Curved Hard Flail"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmRzwyfwdhpgPHKXgKBDqXS7KvPzez26aiPNeckicYQj7N" 
+alt="Blue Sea Shell"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
+alt="Magic Wood"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>-</td>
+</tr>
+{/* J = 3 & 6 (Purple Crystal & Magic Wood) */}
+<tr>
+<td style={tableStyles.td}>Sword of the Stones</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmRfC7Lnm5PJfP7rLRRQFfyFykCYnjqM84L2YkmXsmxk8P" 
+alt="Sword of the Stones"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmYPr4Wy5EXwkKsNzfv9X8YLT7puRx3zQi8iSHB3JuUqc4" 
+alt="Purple Crystals"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
+alt="Magic Wood"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>-</td>
+</tr>
+{/* K = 2 & 5 (Dark Red & Hot Lava) */}
+<tr>
+<td style={tableStyles.td}>Lava Sword</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmXqjxRzc8WgWDPnosW4iBoWicfBq7ecZ3jvYkvgohqx4n" 
+alt="Lava Sword"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmaxgEiMofXFqiW6hDip6MJGnFEpiSNo44fMdfV8S6PWZj" 
+alt="Dark Red Crystals"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmbmjxWDsScgmxcEsYSCKfZge6qLW9odM6koZy6zEg7Dj4" 
+alt="Hot Lava"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>-</td>
+</tr>
+{/* L = 4 & 6 & 5 (Yellow Crystal & Magic Wood & Hot Lava) */}
+<tr>
+<td style={tableStyles.td}>Necromancer's Staff</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmS34ZbeYTKzx4GptJprz5CMDUTd6hSvyEaboYeGCVcDqk" 
+alt="Necromancer's Staff"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmUi1U6ahXXS2FGbXuDMb8BqsHqP1yckLALcQaJkeHABvx" 
+alt="Yellow Crystals"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmZAFL8GHM6o4dAMXe7ifq44vcYQya2UiV7zQrvLtSggE7" 
+alt="Magic Wood"
+style={tableStyles.img}
+/>
+</td>
+<td style={tableStyles.td}>
+<img 
+src="https://chocolate-familiar-wasp-992.mypinata.cloud/ipfs/QmbmjxWDsScgmxcEsYSCKfZge6qLW9odM6koZy6zEg7Dj4" 
+alt="Hot Lava"
+style={tableStyles.img}
+/>
+</td>
+</tr>
+</tbody>
+</table>
+
         <div style={{ 
           width: '100%', 
           maxWidth: '100%', 
